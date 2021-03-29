@@ -1,0 +1,48 @@
+import { HttpClient } from '@angular/common/http';
+import { ConstantPool } from '@angular/compiler';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import {YouTubePlayerModule} from '@angular/youtube-player';
+
+let apiLoaded = false;
+
+@Component({
+  selector: 'app-movie-disp',
+  templateUrl: './movie-disp.component.html',
+  styleUrls: ['./movie-disp.component.css']
+})
+
+export class MovieDispComponent implements OnInit {
+
+  content: any;
+  movie_detail:any;
+  youtube = "";
+  constructor(private route:ActivatedRoute, private http: HttpClient) { }
+
+  ngOnInit(): void {
+    this.content = {
+      id : this.route.snapshot.params['id'],
+      media_type: this.route.snapshot.params['media_type']
+    };
+    this.getMovieDetails();
+    if (!apiLoaded) {
+      // This code loads the IFrame Player API code asynchronously, according to the instructions at
+      // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.body.appendChild(tag);
+      apiLoaded = true;
+    }
+  }
+
+  private getMovieDetails(){
+    this.http.get<any>("http://localhost:8080/getDetails?id=" + this.content.id + "&media_type=" + this.content.media_type)
+    .subscribe(responseData => {
+      this.movie_detail = responseData;
+      this.youtube = responseData.trailer;
+      console.log(this.youtube);
+    });
+  }
+
+
+}

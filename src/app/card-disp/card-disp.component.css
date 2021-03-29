@@ -1,0 +1,52 @@
+#card-header{
+    color: white;
+    margin: 0;
+    margin-left: 10%;
+    padding: 1.5%;
+}
+
+ngb-carousel{
+    outline: none !important;
+    width: 100% !important;
+    height: 360px !important;
+}
+.column{
+    display: inline-block !important;
+    width: 16.66% !important; 
+    padding: 1%;
+}
+
+.container2{
+    margin-left: 10%;
+    width: 80%;
+}
+
+#movie-title{
+    display: none !important;
+    width: 200px;
+}
+
+.card-img-top:hover{
+    transform: scale(1.1);
+}
+
+.card-img-top:hover ~ #movie-title {
+    position: absolute !important;
+    z-index: 1;
+    display: block !important;
+    color: white !important;
+    margin-top: -5% !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* .card-img-top:hover + .movie-title{
+    display: block;
+    position: absolute !important;
+    z-index: 1;
+    font-size: 300px;
+    color: white !important;
+    margin-top: -10% !important;
+} */
+
+

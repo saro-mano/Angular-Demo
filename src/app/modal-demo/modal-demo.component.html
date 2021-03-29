@@ -1,0 +1,36 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">{{castInfo.name}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+          <div class="col-lg-3">
+            <img [src]="castInfo.profile_path" width="100%">
+          </div>
+          <div class="col">
+            Birth: {{castInfo.birthday}}
+            <br>
+            Birth Place: {{castInfo.birth_place}}
+            <br>
+            Gender: {{castInfo.gender}}
+            <br>
+            Known for: {{castInfo.known_for_dept}}
+            <br>
+            Also Known as: {{castInfo.also_know}}
+          </div>
+      </div>
+    </div>
+    <div class="container">
+        <h3>Biography</h3>
+        <p>
+            {{castInfo.bio}}
+            {{castInfo.bio}}
+        </p>
+    </div>
+  </ng-template>
+  
+  
+  <button class="btn btn-outline-primary mb-2 mr-2" (click)="openLg(content,550843)">Large modal</button>

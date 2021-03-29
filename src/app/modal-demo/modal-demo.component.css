@@ -1,0 +1,4 @@
+::ng-deep ng-template{
+    height: 40%;
+    overflow-y: scroll;
+}

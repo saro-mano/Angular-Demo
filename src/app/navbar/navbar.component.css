@@ -1,0 +1,12 @@
+.navbar {
+    background-color: #020925 !important;
+}
+
+.navbar-brand, .navbar-nav *{
+    color: white !important;
+}
+
+.ng-template{
+    color: black !important;
+}
+

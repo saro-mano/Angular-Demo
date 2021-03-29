@@ -1,0 +1,80 @@
+.container{
+    /* border: 1px solid white; */
+    color: white;
+
+}
+
+#trailer-div{
+    padding-top: 3%;
+    /* border: 1px solid white; */
+}
+
+#description{
+    padding-top: 1%;
+}
+
+#share{
+    padding-top: 1%;
+}
+
+#cast-crew{
+    padding-top: 2%;
+}
+
+#cast-images{
+    display: inline-block;
+}
+
+/* .column{
+    display: inline-block !important;
+    width: 16.66% !important; 
+    padding: 1%;
+} */
+
+.card{
+    margin: 0;
+    color: black;
+} 
+#image_row{
+    color: black !important;
+    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* padding: 1%; */
+  }
+
+#image-card {
+    /*float: left;*/
+    max-width: 15.5%;
+    /* padding: 1%; */
+    /* margin-bottom: 2rem; */
+    border: 0;
+    margin-left:1%;
+    flex-basis: 16.3%;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+#review-avatar{
+    padding-left: 10%;
+    padding-top: 2%;
+    /* border: 1px solid black; */
+  }
+
+#review-content{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+#review-card{
+    margin-top: 1%;
+}
+
+.rounded-circle{
+    width: 100px;
+}
