@@ -78,3 +78,7 @@
 .rounded-circle{
     width: 100px;
 }
+
+#alert-box{
+    width: 110%;
+}

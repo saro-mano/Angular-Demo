@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ConstantPool } from '@angular/compiler';
+import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {YouTubePlayerModule} from '@angular/youtube-player';
@@ -17,7 +18,12 @@ export class MovieDispComponent implements OnInit {
   content: any;
   movie_detail:any;
   youtube = "";
+  button_content = "";
+  trigger_message = "";
+  trigger_add = false;
+  trigger_remove = false;
   constructor(private route:ActivatedRoute, private http: HttpClient) { }
+
 
   ngOnInit(): void {
     this.content = {
@@ -25,6 +31,7 @@ export class MovieDispComponent implements OnInit {
       media_type: this.route.snapshot.params['media_type']
     };
     this.getMovieDetails();
+    this.checkLocalStorage();
     if (!apiLoaded) {
       // This code loads the IFrame Player API code asynchronously, according to the instructions at
       // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
@@ -32,6 +39,16 @@ export class MovieDispComponent implements OnInit {
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
       apiLoaded = true;
+    }    
+  }
+
+  private checkLocalStorage(){
+    var key = this.content.id + "," + this.content.media_type;
+    if(!localStorage.getItem(key)){
+      this.button_content = "Add to WatchList";
+    }
+    else{
+      this.button_content = "Remove from WatchList";
     }
   }
 
@@ -44,5 +61,32 @@ export class MovieDispComponent implements OnInit {
     });
   }
 
+  storeLocal(id:string, media_type:string, poster_path:string, title: string){
+    var temp :any = {};
+    var myStorage = window.localStorage;
+    var key = id + "," + media_type;
+    if(!myStorage.getItem(key)){
+      temp.id = id;
+      temp.poster_path = poster_path;
+      temp.title = title;
+      temp.media_type = media_type;
+      myStorage.setItem(key,JSON.stringify(temp));
+      this.trigger_message = "Added to watchlist."
+      this.trigger_add = true;
+      this.trigger_remove = false;
+    }
+    else{
+      myStorage.removeItem(key);
+      this.trigger_message = "Removed from watchlist."
+      this.trigger_remove = true;
+      this.trigger_add = false;
+    }
+    this.checkLocalStorage();
+  }
+
+    closeTrigger(){
+      this.trigger_add = false;
+      this.trigger_remove = false;
+    }
 
 }

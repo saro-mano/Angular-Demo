@@ -12,13 +12,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { ModalDemoComponent } from './modal-demo/modal-demo.component';
+import { MyListComponent } from './my-list/my-list.component';
 
 
 
 
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent},
-  { path: 'watch/:media_type/:id', component: MovieDispComponent}
+  { path: 'watch/:media_type/:id', component: MovieDispComponent},
+  { path: 'mylist', component: MyListComponent}
 ];
 @NgModule({
   
@@ -30,6 +32,7 @@ const appRoutes: Routes = [
     MovieDispComponent,
     HomePageComponent,
     ModalDemoComponent,
+    MyListComponent,
   ],
   imports: [
     BrowserModule,

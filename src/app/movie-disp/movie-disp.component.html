@@ -3,28 +3,37 @@
     <div class="row">
         <div class="col-12 col-md-8">
             <div class="embed-responsive embed-responsive-16by9">
-                <youtube-player videoId="{{movie_detail.trailer}}"></youtube-player>
+                <youtube-player videoId="{{movie_detail?.trailer}}"></youtube-player>
             </div>
         </div>
         <div class="col-6 col-md-3">
-            <h1>{{movie_detail.title}}</h1>
-            <p>{{movie_detail.tagline}}</p>
-            <h6>{{movie_detail.year}} | {{movie_detail.vote_average}} | {{movie_detail.runtime}}</h6>
-            <p>Genre: {{movie_detail.genres}}</p>
-            <p>Spoken Languages: {{movie_detail.spoken_languages}}</p>
-            <button class="btn btn-primary">Add to Watchlist</button>
+            <h1>{{movie_detail?.title}}</h1>
+            <p>{{movie_detail?.tagline}}</p>
+            <h6>{{movie_detail?.year}} | {{movie_detail?.vote_average}} | {{movie_detail?.runtime}}</h6>
+            <p>Genre: {{movie_detail?.genres}}</p>
+            <p class="text-justify" style="white-space:normal;word-break: break-all">Spoken Languages: {{movie_detail?.spoken_languages}}</p>
+            <button class="btn btn-primary" (click)="storeLocal(movie_detail?.id,movie_detail?.media_type,movie_detail?.poster_path,movie_detail?.title)">{{button_content}}</button>
+            <br><br>
+            <div class="alert alert-success alert-dismissible" id="alert-box" *ngIf = trigger_add>
+                <a class="close" data-dismiss="alert" aria-label="close" (click)="closeTrigger()">&times;</a>
+                    {{trigger_message}}
+            </div>
+            <div class="alert alert-danger alert-dismissible" id="alert-box" *ngIf = trigger_remove>
+                <a class="close" data-dismiss="alert" aria-label="close" (click)="closeTrigger()">&times;</a>
+                    {{trigger_message}}
+            </div>
         </div>
       </div>
 </div>
 <div class="container" id = "description">
     <h5>Description</h5>
     <p>
-        {{movie_detail.overview}}
+        {{movie_detail?.overview}}
     </p>
 </div>
 <div class="container" id="share">
     <h5>Share</h5>
-    <a href="https://twitter.com/intent/tweet?text=Watch%20{{movie_detail.title}}%20https://www.youtube.com/watch?v={{movie_detail.trailer}} %20%23USC%20%23CSCI571%20%23FightOn"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
+    <a href="https://twitter.com/intent/tweet?text=Watch%20{{movie_detail?.title}}%20https://www.youtube.com/watch?v={{movie_detail?.trailer}} %20%23USC%20%23CSCI571%20%23FightOn"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
     <i class="fab fa-facebook-square" style="font-size:30px;color: #4267B2;"></i>
 </div>
 
@@ -32,9 +41,9 @@
     <h1>Full Cast and Crew</h1>
     <div class="container">
         <div class="row" id="image_row">
-          <div class="card" id="image-card" *ngFor = "let img of movie_detail.movie_cast">
+          <div class="card" id="image-card" *ngFor = "let img of movie_detail?.movie_cast">
             <img [src]="img.profile_pic">
-            <p class="card-text">{{img.name}}</p>
+            <p class="card-text">{{img?.name}}</p>
           </div>
         </div>
       </div>
@@ -42,7 +51,7 @@
 
 <div class="container">
     <h1>Reviews</h1>
-      <div class="card" id="review-card" *ngFor = "let rev of movie_detail.movie_rev">
+      <div class="card" id="review-card" *ngFor = "let rev of movie_detail?.movie_rev">
           <div class="row" >
             <div class="col-lg-3" id="review-avatar">
                 <img [src]="rev.avatar_path" class="rounded-circle">
@@ -65,3 +74,4 @@
 <div class="container">
     <h1>Similar Movies</h1>
 </div>
+
