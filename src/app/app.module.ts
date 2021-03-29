@@ -14,6 +14,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { ModalDemoComponent } from './modal-demo/modal-demo.component';
 
 
+
+
 const appRoutes: Routes = [
   { path: '', component: HomePageComponent},
   { path: 'watch/:media_type/:id', component: MovieDispComponent}

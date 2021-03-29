@@ -14,8 +14,8 @@
         </li>
       </ul>
       <ng-template #rt let-r="result" let-t="term">
-        <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="mr-1" style="width: 16px">
-        <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+        <img [src]="r['poster_path']" class="mr-1" style="width: 16px">
+        <ngb-highlight [result]="r.title" [term]="t"></ngb-highlight>
       </ng-template>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter">

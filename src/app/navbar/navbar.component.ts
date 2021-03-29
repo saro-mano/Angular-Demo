@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, OperatorFunction} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
+import { convertToObject } from 'typescript';
 
 
 
@@ -61,7 +62,14 @@ const statesWithFlags: {name: string, flag: string}[] = [
   {'name': 'Wyoming', 'flag': 'b/bc/Flag_of_Wyoming.svg/43px-Flag_of_Wyoming.svg.png'}
 ];
 
+interface MyReturnTypeItem{
+  vars: string;
+  smps: string;
+}
 
+interface MyReturnType {
+  [name: string]: MyReturnTypeItem;
+}
 
 @Component({
   selector: 'app-navbar',
@@ -69,29 +77,37 @@ const statesWithFlags: {name: string, flag: string}[] = [
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  statesWithFlags = [{'name': 'Alabama', 'flag': '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png'}];
   constructor(private http: HttpClient) { }
+  search_detail:any;
+  
 
   ngOnInit(): void {
   }
 
 
   public model: any;
-
-
-  // getSearch(){
-
-  // }
-
   
   
-  search: OperatorFunction<string, readonly {name: any, flag: any}[]> = (text$: Observable<string>) =>
+  search: OperatorFunction<string, readonly {title: any, poster_path: any}[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       map(term => term === '' ? []
-        : statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        : this.getMovieDetails(term))
     )
 
-  formatter = (x: {name: string}) => x.name;
+  formatter = (x: {title: string}) => x.title;
+
+
+  private getMovieDetails(term:string):{title:any,poster_path:any}[] {
+    this.http.get<any>("http://localhost:8080/getSearchResults?inp=" + term)
+    .subscribe(responseData => {
+      this.search_detail = responseData;
+    });
+    console.log(this.search_detail);
+    return this.search_detail;
+    // return this.statesWithFlags;
+    
+  }
 
 }
