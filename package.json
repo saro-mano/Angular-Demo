@@ -23,6 +23,7 @@
     "@angular/youtube-player": "^11.2.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@ng-bootstrap/ng-bootstrap": "^9.0.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -1,4 +1,26 @@
 <app-navbar></app-navbar>
-<div class="container" *ngFor = "let temp of myList">
-<h1>{{temp.title}}</h1>
+<div class="container">
+    <h1 id="card-header">Popular Movies</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 col-md-2" *ngFor = "let inner of myList" style="padding:1%;">
+            <img class="card-img-top" [src]="inner.poster_path" alt="Card image cap">
+        </div>
+        <!-- <div class="col-sm-4 col-md-2" >
+            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
+        </div>
+        <div class="col-sm-4 col-md-2" >
+            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
+        </div>
+        <div class="col-sm-4 col-md-2" >
+            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
+        </div>
+        <div class="col-sm-4 col-md-2" >
+            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
+        </div>
+        <div class="col-sm-4 col-md-2" >
+            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
+        </div> -->
+     </div>
 </div>
