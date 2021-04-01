@@ -1,4 +1,57 @@
 <app-navbar></app-navbar>
+<!--Modal Content-->
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">{{castInfo.name}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+          <div class="col-lg-3">
+            <img [src]="castInfo.profile_path" width="100%">
+          </div>
+          <div class="col">
+            Birth: {{castInfo.birthday}}
+            <br>
+            Birth Place: {{castInfo.birth_place}}
+            <br>
+            Gender: {{castInfo.gender}}
+            <br>
+            Known for: {{castInfo.known_for_dept}}
+            <br>
+            Also Known as: {{castInfo.also_know}}
+            <br>
+            <br>
+            <span *ngIf="castInfo.imdb_id">
+            <a target="_blank" href="{{castInfo.imdb_id}}"><i class="fab fa-imdb" style="font-size:30px;color: #DBA506"></i> </a>&nbsp;
+            </span>
+            <span *ngIf="castInfo.twitter_id">
+            <a target="_blank" href="{{castInfo.twitter_id}}"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
+            </span>
+            <span *ngIf="castInfo.insta_id">
+                <a target="_blank" href="{{castInfo.insta_id}}"><i class="fab fa-instagram" style="font-size:30px;color: #8a3ab9"></i> </a>&nbsp;
+            </span>
+            <span *ngIf="castInfo.fb_id">
+                <a target="_blank" href="{{castInfo.fb_id}}"><i class="fab fa-facebook" style="font-size:30px;color: #4267B2;"></i> </a>&nbsp;
+            </span>
+            <!-- <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.youtube.com/watch?v={{movie_detail?.trailer}}" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size:30px;color: #4267B2;"></i></a> -->
+          </div>
+          
+      </div>
+    </div>
+    <div class="container" id="modal-bio">
+        <h3>Biography</h3>
+        <p>
+            {{castInfo.bio}}
+            {{castInfo.bio}}
+        </p>
+    </div>
+  </ng-template>
+<!--MODAL ENDS-->
+
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v10.0" nonce="HMCFI5vQ"></script>
 <div id = "trailer-div" class="container">
     <div class="row">
         <div class="col-12 col-md-8">
@@ -11,7 +64,11 @@
             <p>{{movie_detail?.tagline}}</p>
             <h6>{{movie_detail?.year}} | {{movie_detail?.vote_average}} | {{movie_detail?.runtime}}</h6>
             <p>Genre: {{movie_detail?.genres}}</p>
-            <p class="text-justify" style="white-space:normal;word-break: break-all">Spoken Languages: {{movie_detail?.spoken_languages}}</p>
+            <div>
+                <!-- <p class="text-justify" style="white-space:normal;word-break: break-all"></p> -->
+                    Spoken Languages: {{movie_detail?.spoken_languages}}
+            </div>
+            <br>
             <button class="btn btn-primary" (click)="storeLocal(movie_detail?.id,movie_detail?.media_type,movie_detail?.poster_path,movie_detail?.title)">{{button_content}}</button>
             <br><br>
             <div class="alert alert-success alert-dismissible" id="alert-box" *ngIf = trigger_add>
@@ -33,8 +90,8 @@
 </div>
 <div class="container" id="share">
     <h5>Share</h5>
-    <a href="https://twitter.com/intent/tweet?text=Watch%20{{movie_detail?.title}}%20https://www.youtube.com/watch?v={{movie_detail?.trailer}} %20%23USC%20%23CSCI571%20%23FightOn"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
-    <i class="fab fa-facebook-square" style="font-size:30px;color: #4267B2;"></i>
+    <a target="_blank" href="https://twitter.com/intent/tweet?text=Watch%20{{movie_detail?.title}}%20https://www.youtube.com/watch?v={{movie_detail?.trailer}} %20%23USC%20%23CSCI571%20%23FightOn"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
+    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.youtube.com/watch?v={{movie_detail?.trailer}}" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size:30px;color: #4267B2;"></i></a>
 </div>
 
 <div class="container" id="cast-crew">
@@ -42,29 +99,39 @@
     <div class="container">
         <div class="row" id="image_row">
           <div class="card" id="image-card" *ngFor = "let img of movie_detail?.movie_cast">
-            <img [src]="img.profile_pic">
-            <p class="card-text">{{img?.name}}</p>
+            <img (click)="openLg(content,img.id)" id="cast-pic" [src]="img.profile_pic">
+            <p (click)="openLg(content,img.id)" class="card-text"><span id="cast-name">{{img?.name}}</span><br>
+            <span id="cast-as">AS</span><br>
+            <span id="card-char">{{img?.character}}</span></p>
           </div>
         </div>
       </div>
 </div>
-
+<br>
 <div class="container">
-    <h1>Reviews</h1>
-      <div class="card" id="review-card" *ngFor = "let rev of movie_detail?.movie_rev">
-          <div class="row" >
-            <div class="col-lg-3" id="review-avatar">
-                <img [src]="rev.avatar_path" class="rounded-circle">
+    <h1>Reviews &nbsp; <span style="opacity: 0.5;">{{movie_detail.movie_rev.length}}</span> </h1>
+    <div class="container">
+        <div class="card" id="review-card" *ngFor = "let rev of movie_detail?.movie_rev">
+            <div class="row" >
+              <div class="col-lg-2" id="review-avatar">
+                  <img [src]="rev.avatar_path" class="rounded-circle">
+              </div>
+              <div class="col">
+                    <br>
+                    <div style="display: flex;">
+                        <h4>A review created by {{rev.author}}</h4> &nbsp;&nbsp;&nbsp;
+                        <span id="rev-stars">&#9733;<span style="font-size: .7rem;">{{rev.rating}}</span></span>
+                    </div>
+                    <br>
+                    <p>Written by {{rev.author}} on {{rev.created_at}} </p>
+                    <br>
+                    <p id="review-content">{{rev.content}}</p>
+
+                    <a target="_blank" id="rev-url" href="{{rev.url}}">Read the rest</a>
+              </div>
             </div>
-            <div class="col" style="position: relative !important;">
-                  <h2>A review created by {{rev.author}}</h2>
-                  <br>
-                  <p>Written by {{rev.author}} on {{rev.created_at}} </p>
-                  <br>
-                  <p id="review-content">{{rev.content}}</p>
-            </div>
-          </div>
-      </div>
+        </div>
+    </div>
 </div>
 
 <div class="container">
@@ -74,4 +141,3 @@
 <div class="container">
     <h1>Similar Movies</h1>
 </div>
-

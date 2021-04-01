@@ -14,12 +14,12 @@
         </li>
       </ul>
       <ng-template #rt let-r="result" let-t="term">
-        <img [src]="r['poster_path']" class="mr-1" style="width: 16px">
-        <ngb-highlight [result]="r.title" [term]="t"></ngb-highlight>
+        <a [routerLink] = "['/watch',r.media_type,r.id]"><img [src]="r['poster_path']" class="mr-1" height="35px">
+        <ngb-highlight class="search-text" [result]="r.title" [term]="t"></ngb-highlight></a>
       </ng-template>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input class="form-control mr-sm-2" id="search-bar" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter">
+        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
       </form>
     </div>
 </nav>

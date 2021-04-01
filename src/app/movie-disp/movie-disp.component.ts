@@ -4,6 +4,7 @@ import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {YouTubePlayerModule} from '@angular/youtube-player';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 let apiLoaded = false;
 
@@ -22,7 +23,9 @@ export class MovieDispComponent implements OnInit {
   trigger_message = "";
   trigger_add = false;
   trigger_remove = false;
-  constructor(private route:ActivatedRoute, private http: HttpClient) { }
+  castInfo:any;
+  id:number = 0;
+  constructor(private route:ActivatedRoute, private http: HttpClient, private modalService: NgbModal) { }
 
 
   ngOnInit(): void {
@@ -87,6 +90,22 @@ export class MovieDispComponent implements OnInit {
     closeTrigger(){
       this.trigger_add = false;
       this.trigger_remove = false;
+    }
+
+    openLg(content: any, inp: number) {
+      this.id = inp;
+      console.log(this.id);
+      this.getCastDetails();
+      this.modalService.open(content, { size: 'lg' });
+    }
+  
+    private getCastDetails(){
+      console.log(this.id);
+      this.http.get<any>("http://localhost:8080/getCastDetails?id=" + this.id)
+      .subscribe(responseData => {
+        this.castInfo = responseData;
+        console.log(responseData);
+      });
     }
 
 }

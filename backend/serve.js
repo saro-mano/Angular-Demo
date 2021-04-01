@@ -223,12 +223,14 @@ app.get('/getDetails', async function(req, res){
             return response.data.cast;
         });
         for(i = 0 ; i < movie_cast_data.length;  i++){
-            temp = {};
-            temp["id"] = movie_cast_data[i].id;
-            temp["name"] = movie_cast_data[i].name;
-            temp["character"] = movie_cast_data[i].character;
-            temp["profile_pic"] = "https://image.tmdb.org/t/p/w500" + movie_cast_data[i].profile_path;
-            result["movie_cast"].push(temp);
+            if(movie_cast_data[i].profile_path){
+                temp = {};
+                temp["id"] = movie_cast_data[i].id;
+                temp["name"] = movie_cast_data[i].name;
+                temp["character"] = movie_cast_data[i].character;
+                temp["profile_pic"] = "https://image.tmdb.org/t/p/w500" + movie_cast_data[i].profile_path;
+                result["movie_cast"].push(temp);
+            }
         }
 
         result["movie_rev"] = [];
@@ -258,6 +260,124 @@ app.get('/getDetails', async function(req, res){
         // console.log(result);
         res.send(result);
     }
+    else if(media_type == "tv"){
+        req_url = "https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key + "&language=en- US&page=1";
+        tv_data = await axios.get(req_url).then(function (response) {
+            return response.data;
+        });
+        result['title'] = tv_data.name;
+        genre_list = [];
+        tv_data.genres.forEach(element => {
+            genre_list.push(element.name);
+        });
+        result['genres'] = genre_list.join(", ");
+        spoken_languages_list = []
+        tv_data.spoken_languages.forEach(element => {
+            spoken_languages_list.push(element.english_name);
+        });
+        result['spoken_languages'] = spoken_languages_list.join(", ");
+        result['year'] = tv_data.first_air_date.split("-")[0];
+        result['runtime'] = tv_data.episode_run_time[0]; //should convert this to hours
+        result['overview'] = tv_data.overview;
+        result['vote_average'] = tv_data.vote_average;
+        result['tagline'] = tv_data.tagline;
+        result["recommended_mov"] = [];
+        result["similar_mov"] = [];
+        result["media_type"] = "tv";
+        result["id"] = id;
+        result["poster_path"] = poster_url + tv_data.poster_path;
+        rec_tv_url = "https://api.themoviedb.org/3/tv/"+ id +"/recommendations?api_key=" + api_key+"&language=en-US&page=1"
+        //checked upto this..
+        recommeded_tv_data = await axios.get(rec_tv_url).then(function (response) {
+            return response.data.results;
+        });
+        // console.log(recommeded_movie_data);
+        for(var i = 0 ; i < recommeded_tv_data.length; i++){
+            temp = {};
+            temp["id"] = recommeded_tv_data[i].id;
+            temp["poster_path"] = recommeded_tv_data[i].poster_path;
+            temp["title"] = recommeded_tv_data[i].name;
+            result["recommended_mov"].push(temp);
+        }
+
+        sim_tv_url = "https://api.themoviedb.org/3/tv/" + id + "/similar?api_key="+ api_key +"&languag e=en-US&page=1"
+        similar_tv_data = await axios.get(sim_tv_url).then(function (response) {
+            return response.data.results;
+        });
+
+        for(var i = 0 ; i < similar_tv_data.length; i++){
+            temp = {};
+            temp["id"] = similar_tv_data[i].id;
+            temp["poster_path"] = similar_tv_data[i].poster_path;
+            temp["title"] = similar_tv_data[i].name;
+            result["similar_mov"].push(temp);
+        }
+
+        //getting trailer:
+        video_data_url = "https://api.themoviedb.org/3/tv/" + id + "/videos?api_key="+ api_key +"&languag e=en-US&page=1"
+        video_data = await axios.get(video_data_url).then(function (response) {
+            return response.data.results;
+        });
+
+        for(i = 0 ; i < video_data.length; i++){
+            // youtube_url = "https://www.youtube.com/embed/"
+            youtube_url = "";
+            if(video_data[i].type.includes("Trailer")){
+                youtube_url += video_data[i].key;
+                break;
+            }
+            else if(video_data[i].type.includes("Teaser")){
+                youtube_url += video_data[i].key;
+            }
+            else{
+                youtube_url += "HjlNHsMEXAg";
+            }
+        }
+
+        result["trailer"] = youtube_url;
+
+        result["movie_cast"] = [];
+        movie_cast_url = "https://api.themoviedb.org/3/tv/" + id + "/credits?api_key="+api_key+"&languag e=en-US&page=1"
+        movie_cast_data = await axios.get(movie_cast_url).then(function (response) {
+            return response.data.cast;
+        });
+        for(i = 0 ; i < movie_cast_data.length;  i++){
+            if(movie_cast_data[i].profile_path){
+                temp = {};
+                temp["id"] = movie_cast_data[i].id;
+                temp["name"] = movie_cast_data[i].name;
+                temp["character"] = movie_cast_data[i].character;
+                temp["profile_pic"] = "https://image.tmdb.org/t/p/w500" + movie_cast_data[i].profile_path;
+                result["movie_cast"].push(temp);
+            }
+        }
+
+        result["movie_rev"] = [];
+        movie_rev_url = "https://api.themoviedb.org/3/tv/"+id+"/reviews?api_key="+api_key+"&langua ge=en-US&page=1";
+        movie_rev_data = await axios.get(movie_rev_url).then(function (response) {
+            return response.data.results;
+        });
+        // console.log(movie_rev_data);
+        for(i = 0 ; i < movie_rev_data.length;  i++){
+            temp = {};
+            temp["author"] = movie_rev_data[i].author;
+            temp["content"] = movie_rev_data[i].content;
+            temp["created_at"] = movie_rev_data[i].created_at;
+            temp["url"] = movie_rev_data[i].url;
+            temp["rating"] = movie_rev_data[i].author_details.rating; //check for rating whether null..
+            if(movie_rev_data[i].author_details.avatar_path && movie_rev_data[i].author_details.avatar_path.includes("https")){
+                temp["avatar_path"] = movie_rev_data[i].author_details.avatar_path.slice(1);
+            }
+            else if (movie_rev_data[i].author_details.avatar_path != null){
+                temp["avatar_path"] = "https://image.tmdb.org/t/p/original" + movie_rev_data[i].author_details.avatar_path;
+            }
+            else{
+                temp["avatar_path"] = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHnPmUvFLjjmoYWAbLTEmLLIRCPpV_OgxCVA&usqp=CAU";
+            }
+            result["movie_rev"].push(temp);
+        }
+        res.send(result);
+    }
 });
 
 
@@ -271,17 +391,17 @@ app.get('/getSearchResults', async function(req,res){
     for(i = 0 ; i < search_res_data.length;  i++){
         if (search_res_data[i].media_type == "movie"){
             temp = {};
-            // temp['id'] = search_res_data[i].id;
+            temp['id'] = search_res_data[i].id;
             temp['title'] = search_res_data[i].title;
-            temp['poster_path'] = "https://image.tmdb.org/t/p/w500" + search_res_data[i].poster_path;
-            // temp['media_type'] = "movie";
+            temp['poster_path'] = "https://image.tmdb.org/t/p/original" + search_res_data[i].backdrop_path;
+            temp['media_type'] = "movie";
         }
         if (search_res_data[i].media_type == "tv"){
             temp = {};
-            // temp['id'] = search_res_data[i].id;
+            temp['id'] = search_res_data[i].id;
             temp['title'] = search_res_data[i].name;
-            temp['poster_path'] = "https://image.tmdb.org/t/p/w500" + search_res_data[i].poster_path;
-            // temp['media_type'] = "tv";
+            temp['poster_path'] = "https://image.tmdb.org/t/p/original" + search_res_data[i].backdrop_path;
+            temp['media_type'] = "tv";
         }
         result.push(temp);
     }
@@ -315,13 +435,22 @@ app.get('/getCastDetails', async function(req, res){
     result['profile_path'] = "https://image.tmdb.org/t/p/original" + cast_det_data.profile_path;
 
     cast_ext_det_url = "https://api.themoviedb.org/3/person/"+id+"/external_ids?api_key="+api_key+"&la nguage=en-US&page=1";
-    cast_ext_data = await axios.get(cast_det_url).then(function (response) {
+    cast_ext_data = await axios.get(cast_ext_det_url).then(function (response) {
         return response.data;
     });
-    result['imdb_id'] = "www.imdb.com/name/"+cast_ext_data.imdb_id;
-    result['fb_id'] = "www.facebook.com/"+cast_ext_data.facebook_id;
-    result['insta_id'] = "www.instagram.com/"+cast_ext_data.instagram_id;
-    result['twitter_id'] = "www.twitter.com/"+cast_ext_data.twitter_id;
+    console.log(cast_ext_data);
+    if(cast_ext_data.imdb_id){
+        result['imdb_id'] = "https://www.imdb.com/name/"+cast_ext_data.imdb_id;
+    }  
+    if(cast_ext_data.facebook_id){
+        result['fb_id'] = "https://www.facebook.com/"+cast_ext_data.facebook_id;
+    }
+    if(cast_ext_data.instagram_id){
+        result['insta_id'] = "https://www.instagram.com/"+cast_ext_data.instagram_id;
+    }
+    if(cast_ext_data.twitter_id){
+        result['twitter_id'] = "https://www.twitter.com/"+cast_ext_data.twitter_id;
+    }
     console.log(result);
     res.send(result);
 });

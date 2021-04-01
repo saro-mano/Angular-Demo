@@ -1,26 +1,15 @@
 <app-navbar></app-navbar>
 <div class="container">
-    <h1 id="card-header">Popular Movies</h1>
+    <h1 id="card-header">My WatchList</h1>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4 col-md-2" *ngFor = "let inner of myList" style="padding:1%;">
-            <img class="card-img-top" [src]="inner.poster_path" alt="Card image cap">
-        </div>
-        <!-- <div class="col-sm-4 col-md-2" >
-            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
-        </div>
-        <div class="col-sm-4 col-md-2" >
-            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
-        </div>
-        <div class="col-sm-4 col-md-2" >
-            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
-        </div>
-        <div class="col-sm-4 col-md-2" >
-            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
-        </div>
-        <div class="col-sm-4 col-md-2" >
-            <img class="card-img-top" [src]="temp.poster_path" alt="Card image cap">
-        </div> -->
-     </div>
+<div class="container" id="movie-cards">
+    <div class="container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 col-md-2" *ngFor = "let inner of myList" style="padding:1%;">
+                    <img class="card-img-top" [src]="inner.poster_path" alt="Card image cap">
+                </div>
+             </div>
+         </div>
+    </div>
 </div>

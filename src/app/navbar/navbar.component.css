@@ -10,3 +10,23 @@
     color: black !important;
 }
 
+#search-bar{
+    border: none;
+    background-color: #020925 !important;
+    border-bottom: 1px solid white;
+    border-radius: 0;
+    padding-right: 0%;
+}
+
+#search-bar:focus{
+    outline: none;
+}
+
+::ng-deep .dropdown-menu {
+    background-color: #020925 !important;
+}
+    
+::ng-deep .search-text{
+    color: white;
+}
+
