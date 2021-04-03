@@ -30,7 +30,7 @@ export class CorouselComponent implements OnInit {
 
   private fetchHomeContent(){
     this.http.get<any>("http://localhost:8080/homeContent").subscribe(responseData => {
-      console.log(responseData.currently_playing);
+      // console.log(responseData.currently_playing);
       this.corousel_content = responseData.currently_playing;
     });
   }

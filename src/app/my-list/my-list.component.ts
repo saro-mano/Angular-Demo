@@ -17,8 +17,10 @@ export class MyListComponent implements OnInit {
     var keys = Object.keys(localStorage),
     i = keys.length;
     while ( i-- ) {
-      this.temp = localStorage.getItem(keys[i]);
-      this.myList.push(JSON.parse(this.temp));
+      if (keys[i] != "current"){
+        this.temp = localStorage.getItem(keys[i]);
+        this.myList.push(JSON.parse(this.temp));
+      }
     }
     // var temp = [];
     // for(i = 0 ; i < this.myList.length ; i++){

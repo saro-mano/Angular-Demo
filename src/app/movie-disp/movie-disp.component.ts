@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConstantPool } from '@angular/compiler';
 import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {YouTubePlayerModule} from '@angular/youtube-player';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -16,8 +16,12 @@ let apiLoaded = false;
 
 export class MovieDispComponent implements OnInit {
 
+  test:any = [];
+  current_list:any = [];
   content: any;
   movie_detail:any;
+  similar_movie:any;
+  recommended_movie:any;
   youtube = "";
   button_content = "";
   trigger_message = "";
@@ -25,10 +29,13 @@ export class MovieDispComponent implements OnInit {
   trigger_remove = false;
   castInfo:any;
   id:number = 0;
-  constructor(private route:ActivatedRoute, private http: HttpClient, private modalService: NgbModal) { }
+  constructor(private route:ActivatedRoute, private http: HttpClient, private modalService: NgbModal,private router:Router) { 
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; 
+  }
 
 
   ngOnInit(): void {
+    // localStorage.clear();
     this.content = {
       id : this.route.snapshot.params['id'],
       media_type: this.route.snapshot.params['media_type']
@@ -55,12 +62,76 @@ export class MovieDispComponent implements OnInit {
     }
   }
 
+  private nestedArrayConverter(mov:any){
+    var temp = [];
+    var result = [];
+    for(var i = 0 ; i < mov.length ; i++){
+      temp.push(mov[i]);
+      if(temp.length == 6){
+        result.push(temp);
+        temp = [];
+      }
+    }
+    result.push(temp);
+    return result;
+  }
+
+  storeCurrentlyWatching(id:string, media_type:string, poster_path:string, title: string){
+    //this works...
+    // window.localStorage.setItem("current",JSON.stringify([1]));
+    // this.current_list = (window.localStorage.getItem("current"));
+    // this.current_list = JSON.parse(this.current_list);
+    // this.current_list.push(2);
+    // window.localStorage.setItem("current",JSON.stringify(this.current_list));
+    // console.log(window.localStorage.getItem("current"));
+    //  -------------------------------------------------------------------------
+    // var key = id + "," + media_type;
+    // var temp:any = {};
+    // var parent:any = {};
+    // var parent2:any = {};
+    // temp.id = id;
+    // temp.poster_path = poster_path;
+    // temp.title = title;
+    // temp.media_type = media_type;
+    // parent[key] = temp;
+    // window.localStorage.setItem("current",JSON.stringify([parent]));
+    // this.current_list = window.localStorage.getItem("current");
+    // parent2["dummy"] = temp;
+    // var xd = JSON.parse(this.current_list);
+    // xd.push(parent2);
+    // window.localStorage.setItem("current",JSON.stringify(xd));
+    // this.current_list = window.localStorage.getItem("current");
+    // console.log(JSON.parse(this.current_list));
+    // localStorage.clear();
+    this.current_list = window.localStorage.getItem("current");
+    var key = id + "," + media_type;
+    var temp:any = {};
+    var parent:any = {};
+    temp.id = id;
+    temp.poster_path = poster_path;
+    temp.title = title;
+    temp.media_type = media_type;
+    parent[key] = temp;
+    if (JSON.parse(this.current_list)){
+      var temp_arr = JSON.parse(this.current_list);
+      temp_arr.push(parent);
+      window.localStorage.setItem("current",JSON.stringify(temp_arr));
+    }
+    else{
+      window.localStorage.setItem("current",JSON.stringify([parent]));
+    }
+    this.test = window.localStorage.getItem("current");
+    console.log(JSON.parse(this.test));
+  }
+
   private getMovieDetails(){
     this.http.get<any>("http://localhost:8080/getDetails?id=" + this.content.id + "&media_type=" + this.content.media_type)
     .subscribe(responseData => {
       this.movie_detail = responseData;
       this.youtube = responseData.trailer;
-      console.log(this.youtube);
+      this.recommended_movie = this.nestedArrayConverter(responseData.recommended_mov);
+      this.similar_movie = this.nestedArrayConverter(responseData.similar_mov);
+      this.storeCurrentlyWatching(responseData.id,responseData.media_type,responseData.poster_path,responseData.title);
     });
   }
 

@@ -19,10 +19,21 @@
             <br>
             Gender: {{castInfo.gender}}
             <br>
-            Known for: {{castInfo.known_for_dept}}
-            <br>
-            Also Known as: {{castInfo.also_know}}
-            <br>
+            <span *ngIf = "castInfo.website">
+                Website: <a target="_blank" [href]="castInfo.website"><span style="color: #4267B2; text-decoration: underline;">{{castInfo.website}}</span></a>
+                <br>
+            </span>
+            
+            <span *ngIf = "castInfo.known_for_dept">
+                Known for: {{castInfo.known_for_dept}}
+                <br>
+            </span>
+            
+            <span *ngIf = "castInfo.also_know">
+                Also Known as: {{castInfo.also_know}}
+                <br>
+            </span>
+            
             <br>
             <span *ngIf="castInfo.imdb_id">
             <a target="_blank" href="{{castInfo.imdb_id}}"><i class="fab fa-imdb" style="font-size:30px;color: #DBA506"></i> </a>&nbsp;
@@ -62,7 +73,7 @@
         <div class="col-6 col-md-3">
             <h1>{{movie_detail?.title}}</h1>
             <p>{{movie_detail?.tagline}}</p>
-            <h6>{{movie_detail?.year}} | {{movie_detail?.vote_average}} | {{movie_detail?.runtime}}</h6>
+            <h6>{{movie_detail?.year}} | &#9733;{{movie_detail?.vote_average}} | {{movie_detail?.runtime}}</h6>
             <p>Genre: {{movie_detail?.genres}}</p>
             <div>
                 <!-- <p class="text-justify" style="white-space:normal;word-break: break-all"></p> -->
@@ -109,7 +120,7 @@
 </div>
 <br>
 <div class="container">
-    <h1>Reviews &nbsp; <span style="opacity: 0.5;">{{movie_detail.movie_rev.length}}</span> </h1>
+    <h1>Reviews &nbsp; <span style="opacity: 0.5;">{{movie_detail?.movie_rev.length}}</span> </h1>
     <div class="container">
         <div class="card" id="review-card" *ngFor = "let rev of movie_detail?.movie_rev">
             <div class="row" >
@@ -136,8 +147,38 @@
 
 <div class="container">
     <h1>Recommended Movies</h1>
+    <!--Card Deck Carousel-->
+    <ngb-carousel>
+        <ng-template ngbSlide *ngFor = "let outer_arr of recommended_movie">
+        <div class="container2">
+            <div class="card-deck">
+            <div class="column" *ngFor = "let inner_arr of outer_arr">
+                <a [routerLink] = "['/watch','movie',inner_arr.id]">
+                <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
+                <div id="movie-title">{{inner_arr.title}}</div>
+                </a>
+            </div>
+        </div>
+        </div>
+        </ng-template>
+    </ngb-carousel> 
 </div>
 
 <div class="container">
     <h1>Similar Movies</h1>
+    <!--Card Deck Carousel-->
+    <ngb-carousel>
+        <ng-template ngbSlide *ngFor = "let outer_arr of similar_movie">
+        <div class="container2">
+            <div class="card-deck">
+            <div class="column" *ngFor = "let inner_arr of outer_arr">
+                <a [routerLink] = "['/watch','movie',inner_arr.id]">
+                <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
+                <div id="movie-title">{{inner_arr.title}}</div>
+                </a>
+            </div>
+        </div>
+        </div>
+        </ng-template>
+    </ngb-carousel> 
 </div>

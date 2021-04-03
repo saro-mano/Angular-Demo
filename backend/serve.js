@@ -23,7 +23,7 @@ app.get('/homeContent',async function(req, res){
                 "trending_movies" : [],
                 "popular_tv" : [],
                 "top_rated_tv" : [],
-                "treding_tv" : []};
+                "trending_tv" : []};
     
     //currently playing API call
     
@@ -62,7 +62,7 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < top_rated_movie_data.length; i++){
         temp = {};
         temp["id"] = top_rated_movie_data[i].id;
-        temp["poster_path"] = top_rated_movie_data[i].poster_path;
+        temp["poster_path"] = poster_url + top_rated_movie_data[i].poster_path;
         temp["title"] = top_rated_movie_data[i].title;
         result["top_rated_movies"].push(temp);
     }
@@ -76,7 +76,7 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < trending_movie_data.length; i++){
         temp = {};
         temp["id"] = trending_movie_data[i].id;
-        temp["poster_path"] = trending_movie_data[i].poster_path;
+        temp["poster_path"] = poster_url + trending_movie_data[i].poster_path;
         temp["title"] = trending_movie_data[i].title;
         result["trending_movies"].push(temp);
     }
@@ -90,7 +90,7 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < popular_tv_data.length; i++){
         temp = {};
         temp["id"] = popular_tv_data[i].id;
-        temp["poster_path"] = popular_tv_data[i].poster_path;
+        temp["poster_path"] = poster_url + popular_tv_data[i].poster_path;
         temp["title"] = popular_tv_data[i].name;
         result["popular_tv"].push(temp);
     }
@@ -104,7 +104,7 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < top_rated_tv_data.length; i++){
         temp = {};
         temp["id"] = top_rated_tv_data[i].id;
-        temp["poster_path"] = top_rated_tv_data[i].poster_path;
+        temp["poster_path"] = poster_url + top_rated_tv_data[i].poster_path;
         temp["title"] = top_rated_tv_data[i].name;
         result["top_rated_tv"].push(temp);
     }
@@ -118,9 +118,9 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < treding_tv_data.length; i++){
         temp = {};
         temp["id"] = treding_tv_data[i].id;
-        temp["poster_path"] = treding_tv_data[i].poster_path;
+        temp["poster_path"] = poster_url + treding_tv_data[i].poster_path;
         temp["title"] = treding_tv_data[i].name;
-        result["treding_tv"].push(temp);
+        result["trending_tv"].push(temp);
     }
 
     // console.log(result);
@@ -139,7 +139,7 @@ function timeConvert(num) {
 }
 
 app.get('/getDetails', async function(req, res){
-    result = {}
+    result = {};
     const id = req.query.id; 
     const media_type = req.query.media_type;
     if(media_type == "movie"){
@@ -176,7 +176,7 @@ app.get('/getDetails', async function(req, res){
         for(var i = 0 ; i < recommeded_movie_data.length; i++){
             temp = {};
             temp["id"] = recommeded_movie_data[i].id;
-            temp["poster_path"] = recommeded_movie_data[i].poster_path;
+            temp["poster_path"] = poster_url + recommeded_movie_data[i].poster_path;
             temp["title"] = recommeded_movie_data[i].title;
             result["recommended_mov"].push(temp);
         }
@@ -189,7 +189,7 @@ app.get('/getDetails', async function(req, res){
         for(var i = 0 ; i < similar_movie_data.length; i++){
             temp = {};
             temp["id"] = similar_movie_data[i].id;
-            temp["poster_path"] = similar_movie_data[i].poster_path;
+            temp["poster_path"] = poster_url + similar_movie_data[i].poster_path;
             temp["title"] = similar_movie_data[i].title;
             result["similar_mov"].push(temp);
         }
@@ -245,7 +245,10 @@ app.get('/getDetails', async function(req, res){
             temp["content"] = movie_rev_data[i].content;
             temp["created_at"] = movie_rev_data[i].created_at;
             temp["url"] = movie_rev_data[i].url;
-            temp["rating"] = movie_rev_data[i].author_details.rating; //check for rating whether null..
+            if(movie_rev_data[i].author_details.rating)
+                temp["rating"] = movie_rev_data[i].author_details.rating; //check for rating whether null..
+            else
+                temp["rating"] = 0;
             if(movie_rev_data[i].author_details.avatar_path && movie_rev_data[i].author_details.avatar_path.includes("https")){
                 temp["avatar_path"] = movie_rev_data[i].author_details.avatar_path.slice(1);
             }
@@ -277,7 +280,7 @@ app.get('/getDetails', async function(req, res){
         });
         result['spoken_languages'] = spoken_languages_list.join(", ");
         result['year'] = tv_data.first_air_date.split("-")[0];
-        result['runtime'] = tv_data.episode_run_time[0]; //should convert this to hours
+        result['runtime'] = tv_data.episode_run_time[0] + " mins";
         result['overview'] = tv_data.overview;
         result['vote_average'] = tv_data.vote_average;
         result['tagline'] = tv_data.tagline;
@@ -364,7 +367,10 @@ app.get('/getDetails', async function(req, res){
             temp["content"] = movie_rev_data[i].content;
             temp["created_at"] = movie_rev_data[i].created_at;
             temp["url"] = movie_rev_data[i].url;
-            temp["rating"] = movie_rev_data[i].author_details.rating; //check for rating whether null..
+            if(movie_rev_data[i].author_details.rating){
+                temp["rating"] = movie_rev_data[i].author_details.rating;
+            }
+            temp["rating"] = 0;
             if(movie_rev_data[i].author_details.avatar_path && movie_rev_data[i].author_details.avatar_path.includes("https")){
                 temp["avatar_path"] = movie_rev_data[i].author_details.avatar_path.slice(1);
             }
@@ -416,8 +422,12 @@ app.get('/getCastDetails', async function(req, res){
     cast_det_data = await axios.get(cast_det_url).then(function (response) {
         return response.data;
     });
-    result['birthday'] = cast_det_data.birthday;
-    result['birth_place'] = cast_det_data.place_of_birth;
+    if(cast_det_data.birthday)
+        result['birthday'] = cast_det_data.birthday;
+    if(cast_det_data.place_of_birth)
+        result['birth_place'] = cast_det_data.place_of_birth;
+    if(cast_det_data.homepage)
+        result['website'] = cast_det_data.homepage;
     if(cast_det_data.gender == 1){
         result['gender'] = "Female";
     }
@@ -428,17 +438,21 @@ app.get('/getCastDetails', async function(req, res){
         result['gender'] = "undefined";
     }
     result['name'] = cast_det_data.name;
-    result['also_know'] = cast_det_data.also_known_as.join(", ");
-    result['known_for_dept'] = cast_det_data.known_for_department;
-    result['homepage'] = cast_det_data.homepage;
-    result['bio'] = cast_det_data.biography;
+    if(cast_det_data.also_known_as) 
+        result['also_know'] = cast_det_data.also_known_as.join(", ");
+    if(cast_det_data.known_for_department)
+        result['known_for_dept'] = cast_det_data.known_for_department;
+    if(cast_det_data.homepage)
+        result['homepage'] = cast_det_data.homepage;
+    if(cast_det_data.biography)
+        result['bio'] = cast_det_data.biography;
     result['profile_path'] = "https://image.tmdb.org/t/p/original" + cast_det_data.profile_path;
 
     cast_ext_det_url = "https://api.themoviedb.org/3/person/"+id+"/external_ids?api_key="+api_key+"&la nguage=en-US&page=1";
+    
     cast_ext_data = await axios.get(cast_ext_det_url).then(function (response) {
         return response.data;
     });
-    console.log(cast_ext_data);
     if(cast_ext_data.imdb_id){
         result['imdb_id'] = "https://www.imdb.com/name/"+cast_ext_data.imdb_id;
     }  

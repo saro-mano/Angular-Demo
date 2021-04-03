@@ -9,6 +9,11 @@ import { HttpClient } from '@angular/common/http';
 export class CardDispComponent implements OnInit {
 
   popular_movies:any = [];
+  top_rated_movies:any = [];
+  trending_movies:any = [];
+  popular_tv:any = [];
+  top_rated_tv:any = [];
+  trending_tv:any = [];
 
   constructor(private http: HttpClient) { }
 
@@ -17,21 +22,29 @@ export class CardDispComponent implements OnInit {
   }
   
 
-  private fetchHomeContent(){
-    this.http.get<any>("http://localhost:8080/homeContent").subscribe(responseData => {
-      console.log(responseData.popular_movies);
-      var pop_movs = responseData.popular_movies;
-      console.log(pop_movs);
+  private nestedArrayConverter(mov:any){
       var temp = [];
-      for(var i = 0 ; i < pop_movs.length ; i++){
-        temp.push(pop_movs[i]);
+      var result = [];
+      for(var i = 0 ; i < mov.length ; i++){
+        temp.push(mov[i]);
         if(temp.length == 6){
-          this.popular_movies.push(temp);
+          result.push(temp);
           temp = [];
         }
       }
-      this.popular_movies.push(temp);
-      console.log(this.popular_movies);
+      result.push(temp);
+      return result;
+  }
+  private fetchHomeContent(){
+    this.http.get<any>("http://localhost:8080/homeContent").subscribe(responseData => {
+      this.popular_movies = this.nestedArrayConverter(responseData.popular_movies);
+      this.top_rated_movies = this.nestedArrayConverter(responseData.top_rated_movies);
+      this.trending_movies = this.nestedArrayConverter(responseData.trending_movies);
+      this.popular_tv = this.nestedArrayConverter(responseData.popular_tv);
+      this.top_rated_tv = this.nestedArrayConverter(responseData.top_rated_tv);
+      console.log(responseData.trending_tv);
+      this.trending_tv = this.nestedArrayConverter(responseData.trending_tv);
+      
     });
   }
 }

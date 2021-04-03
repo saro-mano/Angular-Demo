@@ -1,12 +1,14 @@
-<!--This for the slideshow-->>
-<ngb-carousel id = "slideshow-main">
+<!--This for the slideshow-->
+<ngb-carousel>
     <ng-template ngbSlide *ngFor="let item of corousel_content">
-      <div class="img-fluid">
-        <img [src]="item.poster_path" alt="Random first slide" width="100%">
+      <div class="container" id="slideshow">
+        <img id="slideshow-image" [src]="item.poster_path" alt="Random first slide">
+        <div class="carousel-caption">
+          {{item.title}}
+        </div>
       </div>
-      <!-- <div class="carousel-caption">
-        <h3>First slide label</h3>
-        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-      </div> -->
+      
     </ng-template>
-  </ngb-carousel> 
+</ngb-carousel> 
+
+

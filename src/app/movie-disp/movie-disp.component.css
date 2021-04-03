@@ -48,15 +48,37 @@
     margin: 0;
     color: black;
 } 
+/* 
+#row{
+    display: flex;
+    overflow-x: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-y: hidden;
+  }
+  
+  #card {
+    max-width: 15%;
+    margin-bottom: 2rem;
+    border: 0;
+    flex-basis: 33.333%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-left: 1%;
+    border-radius: 5%;
+  } */
+
 #image_row{
-    color: black !important;
-    align-items: stretch;
+    /* color: black !important; */
+    /* align-items: stretch; */
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
+    
     /* padding: 1%; */
+    
   }
 
 #cast-pic{
@@ -64,10 +86,11 @@
     border-top-right-radius: 5%;
 }
 #image-card {
+    
     /*float: left;*/
     max-width: 15.5%;
     /* padding: 1%; */
-    /* margin-bottom: 2rem; */
+    margin-bottom: 2rem;
     border: 0;
     margin-left:1%;
     flex-basis: 16.3%;
@@ -126,3 +149,47 @@
     max-height: 700px;
     overflow-y: scroll !important;
 }
+
+
+/*CSS for Card-Display*/
+ngb-carousel{
+    outline: none !important;
+    width: 100% !important;
+    height: 250px !important;
+}
+
+.column{
+    display: inline-block !important;
+    width: 16.66% !important; 
+    padding: 1%;
+}
+
+.container2{
+    margin-left: 10%;
+    width: 80%;
+}
+
+#movie-title{
+    display: none !important;
+    width: 200px;
+}
+
+.card-img-top:hover{
+    transform: scale(1.1);
+}
+
+.card-img-top:hover ~ #movie-title {
+    position: absolute !important;
+    z-index: 1;
+    display: block !important;
+    color: white !important;
+    margin-top: -5% !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.spl-container{
+    border: 1px solid white;
+}
+
+/*CSS for card-disp ends*/
