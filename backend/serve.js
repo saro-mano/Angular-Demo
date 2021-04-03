@@ -200,21 +200,25 @@ app.get('/getDetails', async function(req, res){
             return response.data.results;
         });
 
-        for(i = 0 ; i < video_data.length; i++){
-            // youtube_url = "https://www.youtube.com/embed/"
-            youtube_url = "";
-            if(video_data[i].type.includes("Trailer")){
-                youtube_url += video_data[i].key;
-                break;
-            }
-            else if(video_data[i].type.includes("Teaser")){
-                youtube_url += video_data[i].key;
-            }
-            else{
-                youtube_url += "HjlNHsMEXAg";
+        youtube_url = "";
+        if(video_data.length != 0){
+            for(i = 0 ; i < video_data.length; i++){
+                // youtube_url = "https://www.youtube.com/embed/"
+                if(video_data[i].type.includes("Trailer")){
+                    youtube_url += video_data[i].key;
+                    break;
+                }
+                else if(video_data[i].type.includes("Teaser")){
+                    youtube_url += video_data[i].key;
+                }
+                else{
+                    youtube_url += "HjlNHsMEXAg";
+                }
             }
         }
-
+        else{
+            youtube_url += "HjlNHsMEXAg";
+        }
         result["trailer"] = youtube_url;
 
         result["movie_cast"] = [];
@@ -358,14 +362,19 @@ app.get('/getDetails', async function(req, res){
         result["movie_rev"] = [];
         movie_rev_url = "https://api.themoviedb.org/3/tv/"+id+"/reviews?api_key="+api_key+"&langua ge=en-US&page=1";
         movie_rev_data = await axios.get(movie_rev_url).then(function (response) {
-            return response.data.results;
+            return response.data.results.slice(0,10);
         });
         // console.log(movie_rev_data);
         for(i = 0 ; i < movie_rev_data.length;  i++){
             temp = {};
             temp["author"] = movie_rev_data[i].author;
             temp["content"] = movie_rev_data[i].content;
-            temp["created_at"] = movie_rev_data[i].created_at;
+            
+            var review_date = new Date(movie_rev_data[i].created_at);
+            var final_time = review_date.toLocaleString('default', { month: 'long' }) + " " + review_date.getDate() + ", " + review_date.getFullYear() + ", " + review_date.toLocaleTimeString('en-US');
+
+            temp["created_at"] = final_time;
+
             temp["url"] = movie_rev_data[i].url;
             if(movie_rev_data[i].author_details.rating){
                 temp["rating"] = movie_rev_data[i].author_details.rating;

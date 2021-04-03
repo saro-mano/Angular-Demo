@@ -2,7 +2,9 @@
 <ngb-carousel>
     <ng-template ngbSlide *ngFor="let item of corousel_content">
       <div class="container" id="slideshow">
-        <img id="slideshow-image" [src]="item.poster_path" alt="Random first slide">
+        <!-- <a [routerLink] = "['\watch','movie',item.id]"> -->
+          <img style="cursor: pointer;" id="slideshow-image" [src]="item.poster_path" (click) = redirect(item.id)>
+        <!-- </a> -->
         <div class="carousel-caption">
           {{item.title}}
         </div>

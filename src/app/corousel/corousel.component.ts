@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 // import { Component } from '@angular/core';
 
@@ -22,7 +23,7 @@ export class CorouselComponent implements OnInit {
 
   corousel_content:any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private router: Router,private http: HttpClient) { }
 
   ngOnInit(): void {
     this.fetchHomeContent();
@@ -33,5 +34,9 @@ export class CorouselComponent implements OnInit {
       // console.log(responseData.currently_playing);
       this.corousel_content = responseData.currently_playing;
     });
+  }
+
+  redirect(id:string){
+    this.router.navigate(['/watch','movie',id]);
   }
 }

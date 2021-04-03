@@ -1,7 +1,7 @@
 
 <h1 id="card-header">Popular Movies</h1>
  <!--Card Deck Carousel-->
-  <ngb-carousel>
+  <ngb-carousel [interval] = 0>
     <ng-template ngbSlide *ngFor = "let outer_arr of popular_movies">
       <div class="container2">
         <div class="card-deck">
@@ -19,7 +19,7 @@
 
 <h1 id="card-header">Top Rated Movies</h1>
  <!--Card Deck Carousel-->
-  <ngb-carousel>
+  <ngb-carousel [interval] = 0>
     <ng-template ngbSlide *ngFor = "let outer_arr of top_rated_movies">
       <div class="container2">
         <div class="card-deck">
@@ -37,7 +37,7 @@
 
 <h1 id="card-header">Trending Movies</h1>
  <!--Card Deck Carousel-->
-  <ngb-carousel>
+  <ngb-carousel [interval] = 0>
     <ng-template ngbSlide *ngFor = "let outer_arr of trending_movies">
       <div class="container2">
         <div class="card-deck">
@@ -55,7 +55,7 @@
 
 <h1 id="card-header">Popular TV Shows</h1>
  <!--Card Deck Carousel-->
-  <ngb-carousel>
+  <ngb-carousel [interval] = 0>
     <ng-template ngbSlide *ngFor = "let outer_arr of popular_tv">
       <div class="container2">
         <div class="card-deck">
@@ -72,7 +72,7 @@
 
 <h1 id="card-header"> Top Rated TV Shows</h1>
  <!--Card Deck Carousel-->
-  <ngb-carousel>
+  <ngb-carousel [interval] = 0>
     <ng-template ngbSlide *ngFor = "let outer_arr of top_rated_tv">
       <div class="container2">
         <div class="card-deck">
@@ -90,7 +90,7 @@
 
 <h1 id="card-header"> Trending TV Shows</h1>
  <!--Card Deck Carousel-->
-  <ngb-carousel>
+  <ngb-carousel [interval] = 0>
     <ng-template ngbSlide *ngFor = "let outer_arr of trending_tv">
       <div class="container2">
         <div class="card-deck">

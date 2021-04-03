@@ -37,4 +37,13 @@ export class MyListComponent implements OnInit {
     
   }
 
+  checkListLength(){
+    if(this.myList.length != 0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
 }
