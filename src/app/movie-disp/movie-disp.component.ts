@@ -35,7 +35,7 @@ export class MovieDispComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // localStorage.clear();
+    
     this.content = {
       id : this.route.snapshot.params['id'],
       media_type: this.route.snapshot.params['media_type']
@@ -76,52 +76,56 @@ export class MovieDispComponent implements OnInit {
     return result;
   }
 
+  // storeCurrentlyWatching(id:string, media_type:string, poster_path:string, title: string){
+  //   this.current_list = window.localStorage.getItem("current");
+  //   var key = id + "," + media_type;
+  //   var temp:any = {};
+  //   var parent:any = {};
+  //   temp.id = id;
+  //   temp.poster_path = poster_path;
+  //   temp.title = title;
+  //   temp.media_type = media_type;
+  //   parent[key] = temp;
+  //   if (JSON.parse(this.current_list)){
+  //     var temp_arr = JSON.parse(this.current_list);
+  //     temp_arr.push(parent);
+  //     window.localStorage.setItem("current",JSON.stringify(temp_arr));
+  //   }
+  //   else{
+  //     window.localStorage.setItem("current",JSON.stringify([parent]));
+  //   }
+  //   this.test = window.localStorage.getItem("current");
+  //   console.log(JSON.parse(this.test));
+  // }
+
   storeCurrentlyWatching(id:string, media_type:string, poster_path:string, title: string){
-    //this works...
-    // window.localStorage.setItem("current",JSON.stringify([1]));
-    // this.current_list = (window.localStorage.getItem("current"));
-    // this.current_list = JSON.parse(this.current_list);
-    // this.current_list.push(2);
-    // window.localStorage.setItem("current",JSON.stringify(this.current_list));
-    // console.log(window.localStorage.getItem("current"));
-    //  -------------------------------------------------------------------------
-    // var key = id + "," + media_type;
-    // var temp:any = {};
-    // var parent:any = {};
-    // var parent2:any = {};
-    // temp.id = id;
-    // temp.poster_path = poster_path;
-    // temp.title = title;
-    // temp.media_type = media_type;
-    // parent[key] = temp;
-    // window.localStorage.setItem("current",JSON.stringify([parent]));
-    // this.current_list = window.localStorage.getItem("current");
-    // parent2["dummy"] = temp;
-    // var xd = JSON.parse(this.current_list);
-    // xd.push(parent2);
-    // window.localStorage.setItem("current",JSON.stringify(xd));
-    // this.current_list = window.localStorage.getItem("current");
-    // console.log(JSON.parse(this.current_list));
     // localStorage.clear();
     this.current_list = window.localStorage.getItem("current");
     var key = id + "," + media_type;
     var temp:any = {};
-    var parent:any = {};
+    // var parent:any = {};
+    temp.mainkey = key;
     temp.id = id;
     temp.poster_path = poster_path;
     temp.title = title;
     temp.media_type = media_type;
-    parent[key] = temp;
+    // parent[key] = temp;
     if (JSON.parse(this.current_list)){
       var temp_arr = JSON.parse(this.current_list);
-      temp_arr.push(parent);
+      for(var i = 0 ; i < temp_arr.length ; i++){
+        if(temp_arr[i]['mainkey'] == key){
+          temp_arr.splice(i,1);
+        }
+      }
+      temp_arr.unshift(temp);
       window.localStorage.setItem("current",JSON.stringify(temp_arr));
     }
     else{
-      window.localStorage.setItem("current",JSON.stringify([parent]));
+      window.localStorage.setItem("current",JSON.stringify([temp]));
     }
     this.test = window.localStorage.getItem("current");
     console.log(JSON.parse(this.test));
+    
   }
 
   private getMovieDetails(){

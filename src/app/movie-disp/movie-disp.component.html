@@ -13,12 +13,21 @@
             <img [src]="castInfo.profile_path" width="100%">
           </div>
           <div class="col">
-            Birth: {{castInfo.birthday}}
-            <br>
-            Birth Place: {{castInfo.birth_place}}
-            <br>
-            Gender: {{castInfo.gender}}
-            <br>
+            <span *ngIf = "castInfo.birthday">
+                Birth: {{castInfo.birthday}}
+                <br>
+            </span>
+            
+            <span *ngIf = "castInfo.birth_place">
+                Birth Place: {{castInfo.birth_place}}
+                <br>
+            </span>
+            
+            <span *ngIf = "castInfo.gender">
+                Gender: {{castInfo.gender}}
+                <br>
+            </span>
+            
             <span *ngIf = "castInfo.website">
                 Website: <a target="_blank" [href]="castInfo.website"><span style="color: #4267B2; text-decoration: underline;">{{castInfo.website}}</span></a>
                 <br>
@@ -52,10 +61,9 @@
           
       </div>
     </div>
-    <div class="container" id="modal-bio">
+    <div class="container" id="modal-bio" *ngIf = "castInfo.bio">
         <h3>Biography</h3>
         <p>
-            {{castInfo.bio}}
             {{castInfo.bio}}
         </p>
     </div>
@@ -127,58 +135,63 @@
               <div class="col-lg-2" id="review-avatar">
                   <img [src]="rev.avatar_path" class="rounded-circle">
               </div>
-              <div class="col">
+              <div class="col" id="rev-col">
+                    <!-- <div style="display: flex;"></div> -->
+                    <h5>A review created by {{rev.author}}&nbsp;&nbsp;&nbsp;
+                    <span id="rev-stars">&nbsp;&#9733;&nbsp;<span style="font-size: .8rem;">{{rev.rating}}&nbsp;</span></span></h5> 
+                    <!-- </div> -->
                     <br>
-                    <div style="display: flex;">
-                        <h4>A review created by {{rev.author}}</h4> &nbsp;&nbsp;&nbsp;
-                        <span id="rev-stars">&#9733;<span style="font-size: .7rem;">{{rev.rating}}</span></span>
-                    </div>
-                    <br>
-                    <p>Written by {{rev.author}} on {{rev.created_at}} </p>
+                    <p style="color: grey;">Written by {{rev.author}} on {{rev.created_at}} </p>
                     <br>
                     <p id="review-content">{{rev.content}}</p>
 
-                    <a target="_blank" id="rev-url" href="{{rev.url}}">Read the rest</a>
+                    <div style="padding-bottom: 20px;">
+                        <a target="_blank" id="rev-url" href="{{rev.url}}">Read the rest</a>
+                    </div>
               </div>
             </div>
         </div>
     </div>
 </div>
-
+<br>
 <div class="container">
-    <h1>Recommended Movies</h1>
-    <!--Card Deck Carousel-->
-    <ngb-carousel>
-        <ng-template ngbSlide *ngFor = "let outer_arr of recommended_movie">
-        <div class="container2">
-            <div class="card-deck">
-            <div class="column" *ngFor = "let inner_arr of outer_arr">
-                <a [routerLink] = "['/watch','movie',inner_arr.id]">
-                <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
-                <div id="movie-title">{{inner_arr.title}}</div>
-                </a>
+    <div class="container">
+        <h1 id="card-header"> Recommended Movies</h1>
+        <!--Card Deck Carousel-->
+        <ngb-carousel [interval] = 0>
+            <ng-template ngbSlide *ngFor = "let outer_arr of recommended_movie">
+            <div class="container2">
+                <div class="card-deck">
+                <div class="column" *ngFor = "let inner_arr of outer_arr">
+                    <a [routerLink] = "['/watch',inner_arr.media_type,inner_arr.id]">
+                    <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
+                    <div id="movie-title">{{inner_arr.title}}</div>
+                    </a>
+                </div>
             </div>
-        </div>
-        </div>
-        </ng-template>
-    </ngb-carousel> 
+            </div>
+            </ng-template>
+        </ngb-carousel>
+    </div>
 </div>
-
+<br>
 <div class="container">
-    <h1>Similar Movies</h1>
-    <!--Card Deck Carousel-->
-    <ngb-carousel>
-        <ng-template ngbSlide *ngFor = "let outer_arr of similar_movie">
-        <div class="container2">
-            <div class="card-deck">
-            <div class="column" *ngFor = "let inner_arr of outer_arr">
-                <a [routerLink] = "['/watch','movie',inner_arr.id]">
-                <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
-                <div id="movie-title">{{inner_arr.title}}</div>
-                </a>
+    <div class="container">
+        <h1 id="card-header"> Similar Movies</h1>
+        <!--Card Deck Carousel-->
+        <ngb-carousel [interval] = 0>
+            <ng-template ngbSlide *ngFor = "let outer_arr of similar_movie">
+            <div class="container2">
+                <div class="card-deck">
+                <div class="column" *ngFor = "let inner_arr of outer_arr">
+                    <a [routerLink] = "['/watch',inner_arr.media_type,inner_arr.id]">
+                    <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
+                    <div id="movie-title">{{inner_arr.title}}</div>
+                    </a>
+                </div>
             </div>
-        </div>
-        </div>
-        </ng-template>
-    </ngb-carousel> 
+            </div>
+            </ng-template>
+        </ngb-carousel>
+    </div>
 </div>

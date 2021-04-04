@@ -11,7 +11,8 @@
 }
 
 #search-bar{
-    border: none;
+    outline:0 !important;
+    border: 0 !important;
     background-color: #020925 !important;
     border-bottom: 1px solid white;
     border-radius: 0;
@@ -19,7 +20,8 @@
 }
 
 #search-bar:focus{
-    outline: none;
+    outline: 0 !important;
+    border: 0 !important;
 }
 
 ::ng-deep .dropdown-menu {
@@ -30,3 +32,6 @@
     color: white;
 }
 
+*:focus {
+    outline: none;
+}

@@ -27,7 +27,7 @@ app.get('/homeContent',async function(req, res){
     
     //currently playing API call
     
-    req_url = "https://api.themoviedb.org/3/trending/movie/day?api_key=" + api_key;
+    req_url = "https://api.themoviedb.org/3/movie/now_playing?api_key="+ api_key + "&language=en-US&page=1";
     current_playing_data = await axios.get(req_url).then(function (response) {
         return response.data.results.slice(0,5);
     })
@@ -247,7 +247,10 @@ app.get('/getDetails', async function(req, res){
             temp = {};
             temp["author"] = movie_rev_data[i].author;
             temp["content"] = movie_rev_data[i].content;
-            temp["created_at"] = movie_rev_data[i].created_at;
+            var review_date = new Date(movie_rev_data[i].created_at);
+            var final_time = review_date.toLocaleString('default', { month: 'long' }) + " " + review_date.getDate() + ", " + review_date.getFullYear() + ", " + review_date.toLocaleTimeString('en-US');
+
+            temp["created_at"] = final_time;
             temp["url"] = movie_rev_data[i].url;
             if(movie_rev_data[i].author_details.rating)
                 temp["rating"] = movie_rev_data[i].author_details.rating; //check for rating whether null..
@@ -408,14 +411,24 @@ app.get('/getSearchResults', async function(req,res){
             temp = {};
             temp['id'] = search_res_data[i].id;
             temp['title'] = search_res_data[i].title;
-            temp['poster_path'] = "https://image.tmdb.org/t/p/original" + search_res_data[i].backdrop_path;
+            if(search_res_data[i].backdrop_path)
+                temp['poster_path'] = "https://image.tmdb.org/t/p/original" + search_res_data[i].backdrop_path;
+            else{
+                temp['poster_path'] = "https://bytes.usc.edu/cs571/s21_JSwasm00/hw/HW6/imgs/movie-placeholder.jpg";
+            }
             temp['media_type'] = "movie";
         }
         if (search_res_data[i].media_type == "tv"){
             temp = {};
             temp['id'] = search_res_data[i].id;
             temp['title'] = search_res_data[i].name;
-            temp['poster_path'] = "https://image.tmdb.org/t/p/original" + search_res_data[i].backdrop_path;
+            if(search_res_data[i].backdrop_path){
+                temp['poster_path'] = "https://image.tmdb.org/t/p/original" + search_res_data[i].backdrop_path;
+            }
+            else{
+                temp['poster_path'] = "https://bytes.usc.edu/cs571/s21_JSwasm00/hw/HW6/imgs/movie-placeholder.jpg"; 
+            }
+            
             temp['media_type'] = "tv";
         }
         result.push(temp);

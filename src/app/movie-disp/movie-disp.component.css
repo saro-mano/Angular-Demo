@@ -114,7 +114,8 @@
 }
 
 #review-card{
-    margin-top: 1%;
+    margin-top: 1.5%;
+    border-radius: 10px;
 }
 
 #rev-stars{
@@ -122,7 +123,7 @@
     color: white;
     border-radius: 40px;
     padding: 2px;
-    padding-bottom: -12px;
+    padding-bottom: -2px;
     height: 30px;
     width: 40px;
     text-align: center;
@@ -131,6 +132,11 @@
 #rev-url{
     text-decoration: underline;
     color: darkblue;
+}
+
+#rev-col{
+    padding-right: 7%;
+    padding-top: 2%;
 }
 
 .rounded-circle{
