@@ -10,6 +10,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 })
 export class CardDispComponent implements OnInit {
 
+
+  
   currently_watching:any = [];
   popular_movies:any = [];
   top_rated_movies:any = [];
@@ -19,6 +21,15 @@ export class CardDispComponent implements OnInit {
   trending_tv:any = [];
   temp:any = [];
   isMobileScreen:boolean = false;
+  currently_watching_parent:any = [];
+
+  popular_movies_mobile:any = [];
+  top_rated_movies_mobile:any  =[];
+  trending_movies_mobile:any = [];
+  popular_tv_mobile: any = [];
+  top_rated_tv_mobile: any = [];
+  trending_tv_mobile: any = [];
+  continue_watch_mobile:any = [];
 
   constructor(private http: HttpClient,private breakpointObserver: BreakpointObserver) { }
 
@@ -31,7 +42,7 @@ export class CardDispComponent implements OnInit {
       else{
         this.isMobileScreen =  false;
       }
-      console.log(this.isMobileScreen);
+      // console.log(this.isMobileScreen);
     })
     
     this.fetchHomeContent();
@@ -61,6 +72,14 @@ export class CardDispComponent implements OnInit {
       this.popular_tv = this.nestedArrayConverter(responseData.popular_tv);
       this.top_rated_tv = this.nestedArrayConverter(responseData.top_rated_tv);
       this.trending_tv = this.nestedArrayConverter(responseData.trending_tv);
+
+      //for mobile
+      this.popular_movies_mobile = responseData.popular_movies;
+      this.top_rated_movies_mobile = responseData.top_rated_movies;
+      this.trending_movies_mobile = responseData.trending_movies;
+      this.popular_tv_mobile = responseData.popular_tv;
+      this.top_rated_tv_mobile = responseData.top_rated_tv;
+      this.trending_tv_mobile = responseData.trending_tv;
       
     });
   }
@@ -68,8 +87,10 @@ export class CardDispComponent implements OnInit {
   private getCurrentlyWatching(){
     console.log(localStorage);
     this.currently_watching = localStorage.getItem("current");
-    this.currently_watching = JSON.parse(this.currently_watching);
-    this.currently_watching = this.nestedArrayConverter(this.currently_watching);
-    console.log(this.currently_watching);
+    this.currently_watching_parent = JSON.parse(this.currently_watching);
+    this.currently_watching = this.nestedArrayConverter(this.currently_watching_parent);
+    this.continue_watch_mobile = this.currently_watching_parent;
+    console.log(this.continue_watch_mobile);
+    // console.log(this.currently_watching);
   }
 }

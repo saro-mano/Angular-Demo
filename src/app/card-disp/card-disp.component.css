@@ -55,4 +55,6 @@ ngb-carousel{
     margin-top: -10% !important;
 } */
 
-
+.no-indicators ::ng-deep .carousel-indicators {
+    display: none;
+  }

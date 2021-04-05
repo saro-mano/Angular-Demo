@@ -64,6 +64,7 @@ export class MovieDispComponent implements OnInit {
 
     this.getMovieDetails();
     this.checkLocalStorage();
+    
     if (!apiLoaded) {
       // This code loads the IFrame Player API code asynchronously, according to the instructions at
       // https://developers.google.com/youtube/iframe_api_reference#Getting_Started
@@ -98,27 +99,7 @@ export class MovieDispComponent implements OnInit {
     return result;
   }
 
-  // storeCurrentlyWatching(id:string, media_type:string, poster_path:string, title: string){
-  //   this.current_list = window.localStorage.getItem("current");
-  //   var key = id + "," + media_type;
-  //   var temp:any = {};
-  //   var parent:any = {};
-  //   temp.id = id;
-  //   temp.poster_path = poster_path;
-  //   temp.title = title;
-  //   temp.media_type = media_type;
-  //   parent[key] = temp;
-  //   if (JSON.parse(this.current_list)){
-  //     var temp_arr = JSON.parse(this.current_list);
-  //     temp_arr.push(parent);
-  //     window.localStorage.setItem("current",JSON.stringify(temp_arr));
-  //   }
-  //   else{
-  //     window.localStorage.setItem("current",JSON.stringify([parent]));
-  //   }
-  //   this.test = window.localStorage.getItem("current");
-  //   console.log(JSON.parse(this.test));
-  // }
+  
 
   storeCurrentlyWatching(id:string, media_type:string, poster_path:string, title: string){
     // localStorage.clear();
@@ -161,6 +142,13 @@ export class MovieDispComponent implements OnInit {
     });
   }
 
+  closeTrigger(){
+    this.trigger_add = false;
+    this.trigger_remove = false;
+    console.log(this.trigger_add);
+    console.log(this.trigger_remove);
+  }
+
   storeLocal(id:string, media_type:string, poster_path:string, title: string){
     var temp :any = {};
     var myStorage = window.localStorage;
@@ -181,13 +169,13 @@ export class MovieDispComponent implements OnInit {
       this.trigger_remove = true;
       this.trigger_add = false;
     }
+    // setTimeout(this.closeTrigger, 20);
+    setTimeout(() => {
+      console.log('here');
+      this.closeTrigger();
+    }, 5000);
     this.checkLocalStorage();
   }
-
-    closeTrigger(){
-      this.trigger_add = false;
-      this.trigger_remove = false;
-    }
 
     openLg(content: any, inp: number) {
       this.id = inp;
