@@ -167,7 +167,11 @@ app.get('/getDetails', async function(req, res){
         result["similar_mov"] = [];
         result["media_type"] = "movie";
         result["id"] = id;
-        result["poster_path"] = poster_url + movie_data.poster_path;
+        if(movie_data.poster_path)
+            result["poster_path"] = poster_url + movie_data.poster_path;
+        else{
+            result["poster_path"] = "https://cinemaone.net/images/movie_placeholder.png";
+        }
         rec_mov_url = "https://api.themoviedb.org/3/movie/"+ id +"/recommendations?api_key=" + api_key+"&language=en-US&page=1"
         recommeded_movie_data = await axios.get(rec_mov_url).then(function (response) {
             return response.data.results;
@@ -176,8 +180,12 @@ app.get('/getDetails', async function(req, res){
         for(var i = 0 ; i < recommeded_movie_data.length; i++){
             temp = {};
             temp["id"] = recommeded_movie_data[i].id;
-            temp["poster_path"] = poster_url + recommeded_movie_data[i].poster_path;
+            if(recommeded_movie_data[i].poster_path)
+                temp["poster_path"] = poster_url + recommeded_movie_data[i].poster_path;
+            else
+                temp["poster_path"] = "https://cinemaone.net/images/movie_placeholder.png";
             temp["title"] = recommeded_movie_data[i].title;
+            temp["media_type"] = "movie";
             result["recommended_mov"].push(temp);
         }
 
@@ -189,8 +197,13 @@ app.get('/getDetails', async function(req, res){
         for(var i = 0 ; i < similar_movie_data.length; i++){
             temp = {};
             temp["id"] = similar_movie_data[i].id;
-            temp["poster_path"] = poster_url + similar_movie_data[i].poster_path;
+            if(similar_movie_data[i].poster_path)
+                temp["poster_path"] = poster_url + similar_movie_data[i].poster_path;
+            else{
+                temp["poster_path"] = "https://cinemaone.net/images/movie_placeholder.png";
+            }
             temp["title"] = similar_movie_data[i].title;
+            temp["media_type"] = "movie";
             result["similar_mov"].push(temp);
         }
 
@@ -272,6 +285,7 @@ app.get('/getDetails', async function(req, res){
     }
     else if(media_type == "tv"){
         req_url = "https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key + "&language=en- US&page=1";
+        console.log(req_url);
         tv_data = await axios.get(req_url).then(function (response) {
             return response.data;
         });
@@ -295,18 +309,28 @@ app.get('/getDetails', async function(req, res){
         result["similar_mov"] = [];
         result["media_type"] = "tv";
         result["id"] = id;
-        result["poster_path"] = poster_url + tv_data.poster_path;
+        if(tv_data.poster_path)
+            result["poster_path"] = poster_url + tv_data.poster_path;
+        else{
+            result["poster_path"] = "https://cinemaone.net/images/movie_placeholder.png";
+        }
         rec_tv_url = "https://api.themoviedb.org/3/tv/"+ id +"/recommendations?api_key=" + api_key+"&language=en-US&page=1"
         //checked upto this..
+        console.log(rec_tv_url);
         recommeded_tv_data = await axios.get(rec_tv_url).then(function (response) {
             return response.data.results;
         });
+        console.log(recommeded_tv_data);
         // console.log(recommeded_movie_data);
         for(var i = 0 ; i < recommeded_tv_data.length; i++){
             temp = {};
             temp["id"] = recommeded_tv_data[i].id;
-            temp["poster_path"] = recommeded_tv_data[i].poster_path;
+            if(recommeded_tv_data[i].poster_path)
+                temp["poster_path"] = poster_url + recommeded_tv_data[i].poster_path;
+            else
+                temp["poster_path"] = "https://cinemaone.net/images/movie_placeholder.png";
             temp["title"] = recommeded_tv_data[i].name;
+            temp["media_type"] = "tv";
             result["recommended_mov"].push(temp);
         }
 
@@ -318,8 +342,13 @@ app.get('/getDetails', async function(req, res){
         for(var i = 0 ; i < similar_tv_data.length; i++){
             temp = {};
             temp["id"] = similar_tv_data[i].id;
-            temp["poster_path"] = similar_tv_data[i].poster_path;
+            if(similar_tv_data[i].poster_path)
+                temp["poster_path"] = poster_url + similar_tv_data[i].poster_path;
+            else{
+                temp["poster_path"] = "https://cinemaone.net/images/movie_placeholder.png";
+            }
             temp["title"] = similar_tv_data[i].name;
+            temp["media_type"] = "tv";
             result["similar_mov"].push(temp);
         }
 
@@ -433,7 +462,7 @@ app.get('/getSearchResults', async function(req,res){
         }
         result.push(temp);
     }
-    console.log(result.slice(0,7));
+
     res.send(result.slice(0,7));
 })
 
@@ -487,7 +516,6 @@ app.get('/getCastDetails', async function(req, res){
     if(cast_ext_data.twitter_id){
         result['twitter_id'] = "https://www.twitter.com/"+cast_ext_data.twitter_id;
     }
-    console.log(result);
     res.send(result);
 });
 

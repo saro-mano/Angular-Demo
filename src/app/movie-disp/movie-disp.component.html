@@ -80,12 +80,12 @@
         </div>
         <div class="col-6 col-md-3">
             <h1>{{movie_detail?.title}}</h1>
-            <p>{{movie_detail?.tagline}}</p>
-            <h6>{{movie_detail?.year}} | &#9733;{{movie_detail?.vote_average}} | {{movie_detail?.runtime}}</h6>
-            <p>Genre: {{movie_detail?.genres}}</p>
+            <p style="color: rgb(184, 184, 184);"><i>{{movie_detail?.tagline}}</i></p>
+            <p style="color: rgb(184, 184, 184);">{{movie_detail?.year}}&nbsp;|&nbsp;&#9733;{{movie_detail?.vote_average}}&nbsp;|&nbsp;{{movie_detail?.runtime}}</p>
+            <p><span style="font-size: 13px;">Genres : </span> <span style="color: rgb(184, 184, 184);">{{movie_detail?.genres}}</span></p>
             <div>
                 <!-- <p class="text-justify" style="white-space:normal;word-break: break-all"></p> -->
-                    Spoken Languages: {{movie_detail?.spoken_languages}}
+                <span style="font-size: 13px;">Spoken Languages : </span> <span style="color: rgb(184, 184, 184);">{{movie_detail?.spoken_languages}}</span>
             </div>
             <br>
             <button class="btn btn-primary" (click)="storeLocal(movie_detail?.id,movie_detail?.media_type,movie_detail?.poster_path,movie_detail?.title)">{{button_content}}</button>
@@ -101,23 +101,26 @@
         </div>
       </div>
 </div>
-<div class="container" id = "description">
-    <h5>Description</h5>
-    <p>
+<div class="container" id = "description" style="padding-left:2%;">
+    <h6>Description</h6>
+    <p style="color: rgb(184, 184, 184);">
         {{movie_detail?.overview}}
     </p>
 </div>
-<div class="container" id="share">
-    <h5>Share</h5>
+<div class="container" id="share" style="padding-left:2%;">
+    <h6>Share</h6>
     <a target="_blank" href="https://twitter.com/intent/tweet?text=Watch%20{{movie_detail?.title}}%20https://www.youtube.com/watch?v={{movie_detail?.trailer}} %20%23USC%20%23CSCI571%20%23FightOn"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
     <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.youtube.com/watch?v={{movie_detail?.trailer}}" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size:30px;color: #4267B2;"></i></a>
 </div>
 
+<!-- <ng-container *ngIf = "isMobileScreen"> -->
+<!-- <div *ngIf = "isMobileScreen then mobileView else desktopView"></div> -->
+<ng-container *ngIf = "isMobileScreen">
 <div class="container" id="cast-crew">
-    <h1>Full Cast and Crew</h1>
+    <h2>Full Cast and Crew</h2>
     <div class="container">
         <div class="row" id="image_row">
-          <div class="card" id="image-card" *ngFor = "let img of movie_detail?.movie_cast">
+          <div class="card" id="image-card-mob" *ngFor = "let img of movie_detail?.movie_cast">
             <img (click)="openLg(content,img.id)" id="cast-pic" [src]="img.profile_pic">
             <p (click)="openLg(content,img.id)" class="card-text"><span id="cast-name">{{img?.name}}</span><br>
             <span id="cast-as">AS</span><br>
@@ -126,9 +129,28 @@
         </div>
       </div>
 </div>
+</ng-container>
+
+<ng-container *ngIf = "!isMobileScreen">
+    <div class="container" id="cast-crew">
+        <h2>Full Cast and Crew</h2>
+        <div class="container">
+            <div class="row" id="image_row">
+              <div class="card" id="image-card" *ngFor = "let img of movie_detail?.movie_cast">
+                <img (click)="openLg(content,img.id)" id="cast-pic" [src]="img.profile_pic">
+                <p (click)="openLg(content,img.id)" class="card-text"><span id="cast-name">{{img?.name}}</span><br>
+                <span id="cast-as">AS</span><br>
+                <span id="card-char">{{img?.character}}</span></p>
+              </div>
+            </div>
+          </div>
+    </div>
+</ng-container>
+
+
 <br>
 <div class="container">
-    <h1>Reviews &nbsp; <span style="opacity: 0.5;">{{movie_detail?.movie_rev.length}}</span> </h1>
+    <h2>Reviews &nbsp; <span style="opacity: 0.5;">{{movie_detail?.movie_rev.length}}</span> </h2>
     <div class="container">
         <div class="card" id="review-card" *ngFor = "let rev of movie_detail?.movie_rev">
             <div class="row" >
@@ -156,7 +178,7 @@
 <br>
 <div class="container">
     <div class="container">
-        <h1 id="card-header"> Recommended Movies</h1>
+        <h2 id="card-header"> Recommended Movies</h2>
         <!--Card Deck Carousel-->
         <ngb-carousel [interval] = 0>
             <ng-template ngbSlide *ngFor = "let outer_arr of recommended_movie">
@@ -177,7 +199,7 @@
 <br>
 <div class="container">
     <div class="container">
-        <h1 id="card-header"> Similar Movies</h1>
+        <h2 id="card-header"> Similar Movies</h2>
         <!--Card Deck Carousel-->
         <ngb-carousel [interval] = 0>
             <ng-template ngbSlide *ngFor = "let outer_arr of similar_movie">
@@ -195,3 +217,5 @@
         </ngb-carousel>
     </div>
 </div>
+
+<app-footer></app-footer>

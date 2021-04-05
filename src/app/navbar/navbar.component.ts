@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable, OperatorFunction} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
 import { convertToObject } from 'typescript';
+import { Router } from '@angular/router';
 
 
 
@@ -23,7 +24,7 @@ interface MyReturnType {
 })
 export class NavbarComponent implements OnInit {
   // statesWithFlags = [{'name': 'Alabama', 'flag': '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png'}];
-  constructor(private http: HttpClient) { }
+  constructor(private router: Router,private http: HttpClient) { }
   search_detail:any;
   
 
@@ -50,6 +51,10 @@ export class NavbarComponent implements OnInit {
       this.search_detail = responseData;
     });
     return this.search_detail;    
+  }
+
+  redirect(id:any,media_type:any){
+    this.router.navigate(['/watch',media_type,id]);
   }
 
 }

@@ -5,6 +5,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {YouTubePlayerModule} from '@angular/youtube-player';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Platform } from '@angular/cdk/platform';
+import {BreakpointObserver, LayoutModule } from '@angular/cdk/layout'; 
+
 
 let apiLoaded = false;
 
@@ -29,17 +32,36 @@ export class MovieDispComponent implements OnInit {
   trigger_remove = false;
   castInfo:any;
   id:number = 0;
-  constructor(private route:ActivatedRoute, private http: HttpClient, private modalService: NgbModal,private router:Router) { 
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false; 
-  }
+
+  isMobileScreen:boolean = false;
+
+
+  constructor(private route:ActivatedRoute,
+    private http: HttpClient,
+    private modalService: NgbModal,
+    private router:Router,
+    private breakpointObserver: BreakpointObserver){ 
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false; 
+    }
 
 
   ngOnInit(): void {
+    
+    this.breakpointObserver.observe('(max-width: 600px)').subscribe((result) => {
+      if(result.matches == true){
+        this.isMobileScreen =  true;
+      }
+      else{
+        this.isMobileScreen =  false;
+      }
+    })
     
     this.content = {
       id : this.route.snapshot.params['id'],
       media_type: this.route.snapshot.params['media_type']
     };
+
+
     this.getMovieDetails();
     this.checkLocalStorage();
     if (!apiLoaded) {
@@ -124,7 +146,7 @@ export class MovieDispComponent implements OnInit {
       window.localStorage.setItem("current",JSON.stringify([temp]));
     }
     this.test = window.localStorage.getItem("current");
-    console.log(JSON.parse(this.test));
+    // console.log(JSON.parse(this.test));
     
   }
 
@@ -169,17 +191,14 @@ export class MovieDispComponent implements OnInit {
 
     openLg(content: any, inp: number) {
       this.id = inp;
-      console.log(this.id);
       this.getCastDetails();
       this.modalService.open(content, { size: 'lg' });
     }
   
     private getCastDetails(){
-      console.log(this.id);
       this.http.get<any>("http://localhost:8080/getCastDetails?id=" + this.id)
       .subscribe(responseData => {
         this.castInfo = responseData;
-        console.log(responseData);
       });
     }
 

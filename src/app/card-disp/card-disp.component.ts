@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BreakpointObserver } from '@angular/cdk/layout';
+
 
 @Component({
   selector: 'app-card-disp',
@@ -16,10 +18,22 @@ export class CardDispComponent implements OnInit {
   top_rated_tv:any = [];
   trending_tv:any = [];
   temp:any = [];
+  isMobileScreen:boolean = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
+
+    this.breakpointObserver.observe('(max-width: 600px)').subscribe((result) => {
+      if(result.matches == true){
+        this.isMobileScreen =  true;
+      }
+      else{
+        this.isMobileScreen =  false;
+      }
+      console.log(this.isMobileScreen);
+    })
+    
     this.fetchHomeContent();
     this.getCurrentlyWatching();
   }

@@ -33,3 +33,7 @@
     margin-left: -4.2%;
 }
 
+#list-content{
+    border: 1px solid white;
+    min-height: 43vh;
+}

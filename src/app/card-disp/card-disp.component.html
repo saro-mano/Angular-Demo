@@ -15,25 +15,6 @@
     </ng-template>
 </ngb-carousel>
 
-
-<h1 id="card-header">Popular Movies</h1>
- <!--Card Deck Carousel-->
-  <ngb-carousel [interval] = 0>
-    <ng-template ngbSlide *ngFor = "let outer_arr of popular_movies">
-      <div class="container2">
-        <div class="card-deck">
-          <div class="column" *ngFor = "let inner_arr of outer_arr">
-            <a [routerLink] = "['/watch','movie',inner_arr.id]">
-            <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap">
-            <div id="movie-title">{{inner_arr.title}}</div>
-            </a>
-          </div>
-      </div>
-      </div>
-    </ng-template>
-</ngb-carousel> 
-
-
 <h1 id="card-header">Top Rated Movies</h1>
  <!--Card Deck Carousel-->
   <ngb-carousel [interval] = 0>

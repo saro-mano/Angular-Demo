@@ -13,6 +13,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { ModalDemoComponent } from './modal-demo/modal-demo.component';
 import { MyListComponent } from './my-list/my-list.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
     HomePageComponent,
     ModalDemoComponent,
     MyListComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

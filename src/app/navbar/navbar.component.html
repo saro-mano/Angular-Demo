@@ -1,5 +1,6 @@
+
 <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" routerLink = "">USC Films</a>
+    <a class="navbar-brand"  routerLink = "">USC Films</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,15 +8,15 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a id="home" class="nav-link" routerLink = "">Home <span class="sr-only">(current)</span></a>
+          <a id="home" class="nav-link" routerLink = "" routerLinkActive = "active" [routerLinkActiveOptions]="{ exact: true }">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink = "/mylist">My List</a>
+          <a class="nav-link" routerLink = "/mylist" routerLinkActive = "active">My List</a>
         </li>
       </ul>
       <ng-template #rt let-r="result" let-t="term">
-        <a [routerLink] = "['/watch',r.media_type,r.id]"><img [src]="r['poster_path']" class="mr-1" height="35px">
-        <ngb-highlight class="search-text" [result]="r.title" [term]="t"></ngb-highlight></a>
+        <span (click) = redirect(r.id,r.media_type)><a [routerLink] = "['/watch',r.media_type,r.id]"><img [src]="r['poster_path']" class="mr-1" height="40px">
+        <ngb-highlight class="search-text" [result]="r.title" [term]="t"></ngb-highlight></a></span>
       </ng-template>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" id="search-bar" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter">
