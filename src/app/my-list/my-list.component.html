@@ -1,11 +1,11 @@
 <app-navbar></app-navbar>
 <div *ngIf = "checkListLength();then hasList else noList"></div>
 <div id="list-content">
-    <ng-template #hasList>
+    <ng-template #hasList id="list-content">
         <div class="container">
             <h1 id="card-header">My WatchList</h1>
         </div>
-        <div class="container" id="movie-cards" >
+        <div class="container" id="movie-cards">
             <div class="container">
                 <div class="container">
                     <div class="row">
@@ -25,25 +25,7 @@
             <h1>No items found in WatchList.</h1>
         </div>
     </ng-template>
-
 </div>
 <app-footer></app-footer>
 
-<!-- <div class="row">
-    <div class="col-12 col-sm-4" style = "border: 1px solid white;">
-        One of three columns
-        </div>
-        <div class="col-12 col-sm-4" style = "border: 1px solid red;">
-        One of three columns
-        </div>
-        <div class="col-12 col-sm-4" style = "border: 1px solid yellow;">
-        One of three columns
-        </div>
-</div> -->
-
-  <!-- <div class="row">
-    <div class="col-6 col-md-4">.col-6 .col-md-4</div>
-    <div class="col-6 col-md-4">.col-6 .col-md-4</div>
-    <div class="col-6 col-md-4">.col-6 .col-md-4</div>
-  </div> -->
 

@@ -8,7 +8,7 @@
 ngb-carousel{
     outline: none !important;
     width: 100 !important;
-    height: 360px !important;
+    height: 340px !important;
 }
 
 .column{
@@ -58,3 +58,14 @@ ngb-carousel{
 .no-indicators ::ng-deep .carousel-indicators {
     display: none;
   }
+
+::ng-deep .carousel-control-prev 
+ {
+  width: 10% !important;
+  margin-left: 0px !important;
+}
+
+::ng-deep .carousel-control-next{
+    width: 10% !important;
+    margin-left: 0px !important;
+}

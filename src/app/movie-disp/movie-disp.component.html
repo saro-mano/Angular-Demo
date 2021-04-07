@@ -45,16 +45,16 @@
             
             <br>
             <span *ngIf="castInfo.imdb_id">
-            <a target="_blank" href="{{castInfo.imdb_id}}"><i class="fab fa-imdb" style="font-size:30px;color: #DBA506"></i> </a>&nbsp;
+            <a target="_blank" href="{{castInfo.imdb_id}}"><i class="fab fa-imdb" style="font-size:30px;color: #DBA506" placement="top" ngbTooltip="Visit IMDB" tooltipClass="my-custom-class"></i></a>&nbsp;
             </span>
             <span *ngIf="castInfo.twitter_id">
-            <a target="_blank" href="{{castInfo.twitter_id}}"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2"></i> </a>&nbsp;
+            <a target="_blank" href="{{castInfo.twitter_id}}"><i class="fab fa-twitter" style="font-size:30px;color: #1DA1F2" placement="top" ngbTooltip="Visit Twitter" tooltipClass="my-custom-class"></i> </a>&nbsp;
             </span>
             <span *ngIf="castInfo.insta_id">
-                <a target="_blank" href="{{castInfo.insta_id}}"><i class="fab fa-instagram" style="font-size:30px;color: #8a3ab9"></i> </a>&nbsp;
+                <a target="_blank" href="{{castInfo.insta_id}}"><i class="fab fa-instagram" style="font-size:30px;color: #8a3ab9" placement="top" ngbTooltip="Visit Instagram"></i> </a>&nbsp;
             </span>
             <span *ngIf="castInfo.fb_id">
-                <a target="_blank" href="{{castInfo.fb_id}}"><i class="fab fa-facebook" style="font-size:30px;color: #4267B2;"></i> </a>&nbsp;
+                <a target="_blank" href="{{castInfo.fb_id}}"><i class="fab fa-facebook" style="font-size:30px;color: #4267B2;" placement="top" ngbTooltip="Visit Facebook"></i> </a>&nbsp;
             </span>
             <!-- <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://www.youtube.com/watch?v={{movie_detail?.trailer}}" class="fb-xfbml-parse-ignore"><i class="fab fa-facebook-square" style="font-size:30px;color: #4267B2;"></i></a> -->
           </div>
@@ -115,7 +115,7 @@
 
 <!-- <ng-container *ngIf = "isMobileScreen"> -->
 <!-- <div *ngIf = "isMobileScreen then mobileView else desktopView"></div> -->
-<ng-container *ngIf = "isMobileScreen">
+<ng-container *ngIf = "isMobileScreen && !no_cast">
 <div class="container" id="cast-crew">
     <h2>Full Cast and Crew</h2>
     <div class="container">
@@ -131,7 +131,7 @@
 </div>
 </ng-container>
 
-<ng-container *ngIf = "!isMobileScreen">
+<ng-container *ngIf = "!isMobileScreen && !no_cast">
     <div class="container" id="cast-crew">
         <h2>Full Cast and Crew</h2>
         <div class="container">
@@ -149,7 +149,7 @@
 
 
 <br>
-<div class="container">
+<div class="container" *ngIf = "!no_reviews">
     <h2>Reviews &nbsp; <span style="opacity: 0.5;">{{movie_detail?.movie_rev.length}}</span> </h2>
     <div class="container">
         <div class="card" id="review-card" *ngFor = "let rev of movie_detail?.movie_rev">
@@ -176,9 +176,11 @@
     </div>
 </div>
 <br>
-<div class="container">
+
+<div class="container" *ngIf = "!isMobileScreen && !no_recommended">
     <div class="container">
-        <h2 id="card-header"> Recommended Movies</h2>
+        <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'movie'"> Recommended Movies</h2>
+        <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'tv'"> Recommended TV</h2>
         <!--Card Deck Carousel-->
         <ngb-carousel [interval] = 0>
             <ng-template ngbSlide *ngFor = "let outer_arr of recommended_movie">
@@ -197,10 +199,11 @@
     </div>
 </div>
 <br>
-<div class="container">
+
+<div class="container" *ngIf = "!isMobileScreen && !no_similar">
     <div class="container">
-        <h2 id="card-header"> Similar Movies</h2>
-        <!--Card Deck Carousel-->
+        <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'movie'"> Similar Movies</h2>
+        <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'tv'"> Similar TV</h2>
         <ngb-carousel [interval] = 0>
             <ng-template ngbSlide *ngFor = "let outer_arr of similar_movie">
             <div class="container2">
@@ -217,5 +220,38 @@
         </ngb-carousel>
     </div>
 </div>
+
+<ng-container *ngIf = "isMobileScreen">
+    <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'movie'"> Recommended Movies</h2>
+    <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'tv'"> Recommended TV</h2>
+      <ngb-carousel [interval] = 0 class="no-indicators">
+        <ng-template ngbSlide *ngFor = "let inner_arr  of recommeded_movie_mobile">
+          <div class="container2">
+                <a [routerLink] = "['/watch',inner_arr.media_type,inner_arr.id]">
+                <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap" height="350px">
+                <div id="movie-title">{{inner_arr.title}}</div>
+                </a>
+          </div>
+        </ng-template>
+    </ngb-carousel> 
+  </ng-container>
+
+<ng-container *ngIf = "isMobileScreen">
+    <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'movie'"> Similar Movies</h2>
+    <h2 id="card-header" *ngIf = "movie_detail?.media_type == 'tv'"> Similar TV</h2>
+      <ngb-carousel [interval] = 0 class="no-indicators">
+        <ng-template ngbSlide *ngFor = "let inner_arr of similar_movie_mobile">
+          <div class="container2">
+                <a [routerLink] = "['/watch',inner_arr.media_type,inner_arr.id]">
+                <img class="card-img-top" [src]="inner_arr.poster_path" alt="Card image cap" height="350px">
+                <div id="movie-title">{{inner_arr.title}}</div>
+                </a>
+          </div>
+        </ng-template>
+    </ngb-carousel> 
+  </ng-container>
+
+
+
 
 <app-footer></app-footer>

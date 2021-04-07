@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar fixed-top navbar-expand navbar-light bg-light">
     <a class="navbar-brand"  routerLink = "">USC Films</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -15,12 +15,41 @@
         </li>
       </ul>
       <ng-template #rt let-r="result" let-t="term">
-        <span (click) = redirect(r.id,r.media_type)><a [routerLink] = "['/watch',r.media_type,r.id]"><img [src]="r['poster_path']" class="mr-1" height="40px">
-        <ngb-highlight class="search-text" [result]="r.title" [term]="t"></ngb-highlight></a></span>
+        <img [src]="r['poster_path']" class="mr-1" height="40px">
+        <ngb-highlight class="search-text" [result]="r.title" [term]="t"></ngb-highlight>
       </ng-template>
+
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" id="search-bar" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter">
+        <input class="form-control mr-sm-2" id="search-bar" (selectItem)="selectedItem($event)" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter">
         <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
       </form>
+
+      <!-- <div class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" [resultTemplate]="rt"   id="search-bar" type="search" placeholder="Search" aria-label="Search" [ngbTypeahead]="search" [inputFormatter]="formatter" >
+      </div> -->
+      
     </div>
 </nav>
+
+
+<!-- <nav class="navbar fixed-top navbar-expand navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item-active">
+                <a class="nav-link" href="#/">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#/product">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#/services">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#/career">Career</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#/contact">Contact Us</a>
+            </li>
+        </ul>
+    </div>
+</nav> -->

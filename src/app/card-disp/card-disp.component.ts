@@ -85,7 +85,7 @@ export class CardDispComponent implements OnInit {
   }
 
   private getCurrentlyWatching(){
-    console.log(localStorage);
+    // console.log(localStorage);
     this.currently_watching = localStorage.getItem("current");
     this.currently_watching_parent = JSON.parse(this.currently_watching);
     this.currently_watching = this.nestedArrayConverter(this.currently_watching_parent);

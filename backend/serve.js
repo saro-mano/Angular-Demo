@@ -6,6 +6,7 @@ var request = require('request');
 const api_key = "e6f1b17d225b1f7500bdfe2b2d0289df";
 const poster_url = "https://image.tmdb.org/t/p/w500";
 const backdrop_url = "https://image.tmdb.org/t/p/w780";
+const dummy_poster = "https://cinemaone.net/images/movie_placeholder.png";
 const axios = require('axios');
 app.use(cors())
 
@@ -48,7 +49,10 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < popular_movie_data.length; i++){
         temp = {};
         temp["id"] = popular_movie_data[i].id;
-        temp["poster_path"] = poster_url + popular_movie_data[i].poster_path;
+        if(popular_movie_data[i].poster_path)
+            temp["poster_path"] = poster_url + popular_movie_data[i].poster_path;
+        else
+            temp["poster_path"] = dummy_poster;
         temp["title"] = popular_movie_data[i].title;
         result["popular_movies"].push(temp);
     }
@@ -62,7 +66,10 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < top_rated_movie_data.length; i++){
         temp = {};
         temp["id"] = top_rated_movie_data[i].id;
-        temp["poster_path"] = poster_url + top_rated_movie_data[i].poster_path;
+        if(top_rated_movie_data[i].poster_path)
+            temp["poster_path"] = poster_url + top_rated_movie_data[i].poster_path;
+        else
+            temp["poster_path"] = dummy_poster;
         temp["title"] = top_rated_movie_data[i].title;
         result["top_rated_movies"].push(temp);
     }
@@ -76,7 +83,10 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < trending_movie_data.length; i++){
         temp = {};
         temp["id"] = trending_movie_data[i].id;
-        temp["poster_path"] = poster_url + trending_movie_data[i].poster_path;
+        if(trending_movie_data[i].poster_path)
+            temp["poster_path"] = poster_url + trending_movie_data[i].poster_path;
+        else
+            temp["poster_path"] = dummy_poster;
         temp["title"] = trending_movie_data[i].title;
         result["trending_movies"].push(temp);
     }
@@ -90,7 +100,10 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < popular_tv_data.length; i++){
         temp = {};
         temp["id"] = popular_tv_data[i].id;
-        temp["poster_path"] = poster_url + popular_tv_data[i].poster_path;
+        if(popular_tv_data[i].poster_path)
+            temp["poster_path"] = poster_url + popular_tv_data[i].poster_path;
+        else
+            temp["poster_path"] = dummy_poster;
         temp["title"] = popular_tv_data[i].name;
         result["popular_tv"].push(temp);
     }
@@ -104,7 +117,10 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < top_rated_tv_data.length; i++){
         temp = {};
         temp["id"] = top_rated_tv_data[i].id;
-        temp["poster_path"] = poster_url + top_rated_tv_data[i].poster_path;
+        if(top_rated_tv_data[i].poster_path)
+            temp["poster_path"] = poster_url + top_rated_tv_data[i].poster_path;
+        else   
+            temp["poster_path"] = dummy_poster;
         temp["title"] = top_rated_tv_data[i].name;
         result["top_rated_tv"].push(temp);
     }
@@ -118,7 +134,10 @@ app.get('/homeContent',async function(req, res){
     for(i = 0 ; i < treding_tv_data.length; i++){
         temp = {};
         temp["id"] = treding_tv_data[i].id;
-        temp["poster_path"] = poster_url + treding_tv_data[i].poster_path;
+        if(treding_tv_data[i].poster_path)
+            temp["poster_path"] = poster_url + treding_tv_data[i].poster_path;
+        else
+            temp["poster_path"] = dummy_poster;
         temp["title"] = treding_tv_data[i].name;
         result["trending_tv"].push(temp);
     }
@@ -285,7 +304,7 @@ app.get('/getDetails', async function(req, res){
     }
     else if(media_type == "tv"){
         req_url = "https://api.themoviedb.org/3/tv/" + id + "?api_key=" + api_key + "&language=en- US&page=1";
-        console.log(req_url);
+        // console.log(req_url);
         tv_data = await axios.get(req_url).then(function (response) {
             return response.data;
         });
@@ -316,13 +335,14 @@ app.get('/getDetails', async function(req, res){
         }
         rec_tv_url = "https://api.themoviedb.org/3/tv/"+ id +"/recommendations?api_key=" + api_key+"&language=en-US&page=1"
         //checked upto this..
-        console.log(rec_tv_url);
+       
         recommeded_tv_data = await axios.get(rec_tv_url).then(function (response) {
             return response.data.results;
         });
-        console.log(recommeded_tv_data);
-        // console.log(recommeded_movie_data);
+        
+        
         for(var i = 0 ; i < recommeded_tv_data.length; i++){
+            
             temp = {};
             temp["id"] = recommeded_tv_data[i].id;
             if(recommeded_tv_data[i].poster_path)
@@ -358,21 +378,27 @@ app.get('/getDetails', async function(req, res){
             return response.data.results;
         });
 
-        for(i = 0 ; i < video_data.length; i++){
-            // youtube_url = "https://www.youtube.com/embed/"
-            youtube_url = "";
-            if(video_data[i].type.includes("Trailer")){
-                youtube_url += video_data[i].key;
-                break;
-            }
-            else if(video_data[i].type.includes("Teaser")){
-                youtube_url += video_data[i].key;
-            }
-            else{
-                youtube_url += "HjlNHsMEXAg";
+        youtube_url = "";
+
+        if(video_data.length != 0){
+            for(i = 0 ; i < video_data.length; i++){
+                // youtube_url = "https://www.youtube.com/embed/"
+                
+                if(video_data[i].type.includes("Trailer")){
+                    youtube_url += video_data[i].key;
+                    break;
+                }
+                else if(video_data[i].type.includes("Teaser")){
+                    youtube_url += video_data[i].key;
+                }
+                else{
+                    youtube_url += "HjlNHsMEXAg";
+                }
             }
         }
-
+        else{
+            youtube_url += "HjlNHsMEXAg";
+        }
         result["trailer"] = youtube_url;
 
         result["movie_cast"] = [];
@@ -431,12 +457,14 @@ app.get('/getDetails', async function(req, res){
 app.get('/getSearchResults', async function(req,res){
     result = [];
     var inp = req.query.inp;
+    console.log("----------------------------------------------------------------------------------------")
+    console.log(inp);
     search_res_url = "https://api.themoviedb.org/3/search/multi?api_key="+api_key+"&language=en-US&query="+inp;
     search_res_data = await axios.get(search_res_url).then(function (response) {
         return response.data.results;
     });
     for(i = 0 ; i < search_res_data.length;  i++){
-        if (search_res_data[i].media_type == "movie"){
+        if (search_res_data[i].media_type == "movie" && search_res_data[i].backdrop_path){
             temp = {};
             temp['id'] = search_res_data[i].id;
             temp['title'] = search_res_data[i].title;
@@ -446,8 +474,9 @@ app.get('/getSearchResults', async function(req,res){
                 temp['poster_path'] = "https://bytes.usc.edu/cs571/s21_JSwasm00/hw/HW6/imgs/movie-placeholder.jpg";
             }
             temp['media_type'] = "movie";
+            result.push(temp);
         }
-        if (search_res_data[i].media_type == "tv"){
+        else if(search_res_data[i].media_type == "tv" && search_res_data[i].backdrop_path){
             temp = {};
             temp['id'] = search_res_data[i].id;
             temp['title'] = search_res_data[i].name;
@@ -459,10 +488,11 @@ app.get('/getSearchResults', async function(req,res){
             }
             
             temp['media_type'] = "tv";
+            result.push(temp);
         }
-        result.push(temp);
+        
     }
-
+    console.log(result);
     res.send(result.slice(0,7));
 })
 

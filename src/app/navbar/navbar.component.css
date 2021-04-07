@@ -15,11 +15,13 @@
 
 #search-bar{
     outline:0 !important;
-    border: 0 !important;
+    border: none !important;
     background-color: #020925 !important;
     border-bottom: 1px solid white;
     border-radius: 0;
     padding-right: 0%;
+    background: transparent;
+    box-shadow: none !important;
 }
 
 #search-bar:focus{
